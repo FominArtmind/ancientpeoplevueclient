@@ -1,7 +1,17 @@
 <template>
-  <div class="flex">
-    <Card />
-    <Card />
-    <Card />
+  <div class="flex w-screen h-screen bg-image bg-cover">
+    <div class="w-1/5">
+      <StateArea />
+      <ChatArea />
+    </div>
+    <div class="w-4/5">
+      <PlayArea />
+    </div>
   </div> 
 </template>
+
+<style scoped>
+.bg-image {
+  background-image: url("./assets/intro-bg.png");
+}
+</style>

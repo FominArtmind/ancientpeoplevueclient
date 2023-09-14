@@ -15,7 +15,8 @@ export default {
   ],
   devtools: { enabled: true },
   modules: [
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    'nuxt-icon'
   ],
   typescript: {
     strict: true,

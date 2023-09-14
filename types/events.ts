@@ -135,9 +135,58 @@ export interface CommunityEvent {
   type: "community"
   actor: string
   unit: string
-  number: number 
+  number: number
 }
 
+// TO DO
+export interface ChatEvent {
+  type: "chat"
+  actor: string
+  text: string
+}
+
+export interface GeneralEvent {
+  type: string
+  actor?: string
+  aim?: string
+  card?: string
+  unit?: string
+  from?: string 
+  food?: number
+  culture?: number
+  maxCulture?: number
+  hunters?: string[]
+  resource?: string
+  number?: number
+  resources?: string[]
+  resourceType?: string
+  discard?: string[]
+  chances?: {
+    winRate: number
+    loseRate: number
+    testWins: number
+    testLosses: number
+  }
+  raiders?: {
+    type: string
+    impact: number
+  }[]
+  victims?: {
+    type: string
+    impact: number
+  }[]
+  success?: boolean
+  foodGain?: number
+  foodLost?: number
+  cultureGain?: number
+  cultureLost?: number 
+  text?: string
+  turn?: number
+  phase?: string
+  winner?: string
+  result?: {[nick: string]: number}
+  unknownForPlayer?: boolean
+}
 
 // export interface ConnectEvent {
 //   // empty
