@@ -94,9 +94,9 @@ export interface PathfindingChoiceEvent {
   actor: string
   resource: string
   from: string
-  unknownForPlayer: boolean
 }
 
+// deprecated ?
 export interface MigrationChoiceEvent {
   type: "migrationChoice"
   actor: string
@@ -110,6 +110,11 @@ export interface CardEvent {
   unit: string
 }
 
+export interface PassEvent {
+  type: "pass"
+  actor: string
+}
+
 export interface ExtraCardsEvent {
   type: "extraCards"
   actor: string
@@ -121,14 +126,12 @@ export interface ScentEvent {
   actor: string
   resources: string[]
   resourceType: string
-  unknownForPlayer: boolean 
 }
 
 export interface MigrationEvent {
   type: "migration"
   actor: string
   resources: string[]
-  unknownForPlayer: boolean
 }
 
 export interface CommunityEvent {
