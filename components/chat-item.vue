@@ -57,7 +57,7 @@
         <ChatValue :value="'discarded'" />
       </template>
       <template v-else-if="event.type === 'turn'">
-        <div class="font-semibold">
+        <div class="font-semibold my-6">
           <ChatValue :value="'Turn'" />
           <ChatValue :value="event.turn" />
           <ChatValue :value="event.phase" />
@@ -160,7 +160,7 @@
         <ChatValue :value="'UNKNOWN CHAT EVENT'" />
       </template>
     </div>
-    <hr />
+    <hr class="opacity-25" />
   </template>
 </template>
 

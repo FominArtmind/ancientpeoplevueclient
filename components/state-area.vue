@@ -1,8 +1,19 @@
 <template>
-  <div class="p-2 border-b-2 border-white">
-    <div>Turn 1, Victory: 50</div>
-    <div>Arseniy, alcho</div>
-    <div>Inventions: [Fishing Hook] [Needle] [Handle] [Totems] [Flint]</div>
+  <div class="flex flex-col justify-between p-2 border-b-2 border-white">
+    <div class="flex justify-between flex-wrap">
+      <div>Turn {{ game.state.turn }}, {{ game.state.phase }} phase</div>
+      <div>Victory: {{ victory }}</div>
+    </div>
+    <div class="flex justify-between flex-wrap">
+      <div class="pr-2"><Icon name="bi:sun-fill" /></div>
+      <div class="font-semibold px-1">{{ inventions[0] }}</div>
+      <div class="px-1">{{ inventions[1] }}</div>
+      <div class="px-1">{{ inventions[2] }}</div>
+    </div>
+    <div class="flex justify-between flex-wrap">
+      <div class="pr-2"><Icon name="fa6-solid:user-group" /></div>
+      <div v-for="(player, index) in game.state.players" class="px-1" :class="{ 'font-semibold': index === game.state.actor }">{{ player.nick.substring(0, 10) }}</div>
+    </div>
   </div>
 </template>
 
@@ -10,4 +21,17 @@
 </style>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { Game } from "../types/game";
+
+const props = defineProps<{ game: Game }>();
+
+const victory = computed(() => {
+  return props.game.options.find(value => value.name === "victoryCulture")?.value;
+});
+
+const inventions = computed(() => {
+  return props.game.inventions.slice(props.game.state.turn - 1, props.game.state.turn + 2);
+});
+
 </script>
