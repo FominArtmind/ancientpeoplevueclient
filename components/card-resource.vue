@@ -1,10 +1,13 @@
 <template>
   <CardBody>
-    <div class="w-full image-container bg-contain bg-no-repeat" :style="{ 'background-image': 'url(/gamedata/resources/views/' + card.type + '-white.png)' }"></div>
-    <div class="mx-auto">
-      <div v-if="resource?.hunting"><Icon v-for="n in resource?.peopleCost" name="teenyicons:arrow-up-outline"/></div>
-      <div v-if="!resource?.hunting"><Icon name="ph:person-simple-fill"/></div>
-      <div class="flex justify-center"><div>{{ resource?.food }}</div> <div class="apple-icon-fix"><Icon name="bi:apple"/></div></div>
+    <div class="w-full image-container bg-contain bg-no-repeat" data-te-toggle="tooltip" v-bind:title="resource?.title" :style="{ 'background-image': 'url(/gamedata/resources/views/' + card.type + '-white.png)' }"></div>
+    <div>
+      <div v-if="resource?.hunting" class="mx-auto w-min" data-te-toggle="tooltip" v-bind:title="'Requires ' + resource?.peopleCost + ' hunting in total to get'"><div class="flex"><Icon v-for="n in resource?.peopleCost" name="teenyicons:arrow-up-outline"/></div></div>
+      <div v-if="!resource?.hunting" class="mx-auto w-min" data-te-toggle="tooltip" v-bind:title="'Requires 1 person to get'"><Icon name="ph:person-simple-fill"/></div>
+      <div class="flex justify-center mx-auto w-min" data-te-toggle="tooltip" v-bind:title="resource?.title + ' provides you with ' + resource?.food + ' food when ' + (resource?.hunting ? 'hunted' : 'fished')">
+        <div>{{ resource?.food }}</div>
+        <div class="apple-icon-fix"><Icon name="bi:apple"/></div>
+      </div>
     </div>
   </CardBody>
 </template>
@@ -12,6 +15,7 @@
 <style scoped>
 .image-container {
   aspect-ratio: 5/4;
+  margin-bottom: 10%;
   margin-top: 20%;
   width: 100%;
 }
@@ -43,6 +47,13 @@
 import { ref } from "vue";
 import { Card } from "../types/game";
 import { Resource } from "../types/resource";
+import { onMounted } from 'vue'
+// @ts-ignore
+import { Tooltip, initTE } from "tw-elements";
+
+onMounted(() => {
+  initTE({ Tooltip });
+});
 
 const props = defineProps<{ card: Card }>();
 

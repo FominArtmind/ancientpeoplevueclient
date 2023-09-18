@@ -1,6 +1,6 @@
 <template>
   <Link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap" rel="stylesheet" />
-  <div class="flex w-screen h-screen bg-image bg-cover">
+  <div class="flex w-screen h-screen bg-image bg-cover select-none">
     <div class="w-1/5 h-screen overflow-hidden">
       <StateArea class="h-28" :game="game" />
       <ChatArea class="h-[calc(100%-160px)]" />
@@ -19,6 +19,7 @@
 </style>
 
 <script setup lang="ts">
+import "tw-elements/dist/css/tw-elements.min.css";
 import { ref } from "vue";
 import { Game } from "./types/game";
 
