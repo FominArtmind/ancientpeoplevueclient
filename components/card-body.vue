@@ -31,6 +31,12 @@
   /* background-color: rgba(154, 182, 189, 0.35); */
   background-color: rgba(118, 139, 144, 0.35);
   font-size: 0.35rem;
+
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -o-user-select: none;
+  user-select: none;
 }
 @container (min-width: 40px) {
   .card-background {
