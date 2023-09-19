@@ -8,27 +8,13 @@
       <CardResource v-for="card in resourceCards" :card="card"/>
     </div>
     <div class="flex">
-      <CardResource v-for="card in resourceCards2" :card="card"/>
+      <CardUnit v-for="card in unitCards" :card="card"/>
     </div>
     <div class="flex">
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
-      <CardBody />
+      <CardUnit v-for="card in unitCards2" :card="card"/>
+    </div>
+    <div class="flex">
+      <CardUnit v-for="card in unitCards3" :card="card"/>
     </div>
   </div>
 </template>
@@ -96,6 +82,37 @@ const resourceCards2 = ref<Card[]>([
   { id: 0, type: 'deer'},
   { id: 0, type: 'aurochs'},
   { id: 0, type: 'mammoth'}
+]);
+const unitCards = ref<Card[]>([
+  { id: 0, type: 'inhabitant'},
+  { id: 0, type: 'fire-keeper'},
+  { id: 0, type: 'leader'},
+  { id: 0, type: 'collector'},
+  { id: 0, type: 'fisher'},
+  { id: 0, type: 'agile'},
+  { id: 0, type: 'caveman'}
+]);
+const unitCards2 = ref<Card[]>([
+  { id: 0, type: 'mentor'},
+  { id: 0, type: 'cannibal'},
+  { id: 0, type: 'patrol'},
+  { id: 0, type: 'chiropractor'},
+  { id: 0, type: 'handyman'},
+  { id: 0, type: 'ancient'},
+  { id: 0, type: 'hunter'},
+]);
+const unitCards3 = ref<Card[]>([
+  { id: 0, type: 'watchdog'},
+  { id: 0, type: 'engraver'},
+  { id: 0, type: 'pathfinder'},
+  { id: 0, type: 'warrior'},
+  { id: 0, type: 'amazon'},
+  { id: 0, type: 'bear-son'},
+  { id: 0, type: 'settler'},
+  { id: 0, type: 'wet-nurse'},
+  { id: 0, type: 'beater'},
+  { id: 0, type: 'shaman'},
+  { id: 0, type: 'chieftain'}
 ]);
 
 const positionStyle = computed(() => ({

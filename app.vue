@@ -20,8 +20,15 @@
 
 <script setup lang="ts">
 import "tw-elements/dist/css/tw-elements.min.css";
+import { onMounted } from "vue";
+// @ts-ignore
+import { Tooltip, initTE } from "tw-elements";
 import { ref } from "vue";
 import { Game } from "./types/game";
+
+onMounted(() => {
+  initTE({ Tooltip });
+});
 
 const game = ref<Game>({
   id: "id",

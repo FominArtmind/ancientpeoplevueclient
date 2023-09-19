@@ -5,12 +5,12 @@
         <!-- <ChatValue :value="event.actor" /> -->
         <div class="mx-2"></div>
         <ArtIcon v-for="unit in event.hunters" :type="unit" :resource="false" />
-        <ChatValue :value="'hunts'" />
+        <ChatValue :value="event.resource === 'fish' ? 'fishes' : 'hunts'" />
         <ArtIcon v-for="n in event.number" :type="event.resource" :resource="true" />
         <Icon name="bi:arrow-right"/>
         <template v-if="event.food && event.food !== 0">
           <ChatValue :value="event.food" />
-          <Icon name="bi:apple"/>
+          <Icon name="mdi:food-drumstick"/>
         </template>
         <template v-if="event.culture && event.culture !== 0">
           <ChatValue :value="event.culture" />
@@ -29,7 +29,7 @@
         <ChatValue :value="event.success ? 'SUCCESS' : 'FAILURE'" />
         <template v-if="event.foodGain && event.foodGain !== 0">
           <ChatValue :value="event.foodGain" />
-          <Icon name="bi:apple"/>
+          <Icon name="mdi:food-drumstick"/>
         </template>
         <template v-if="event.cultureGain && event.cultureGain !== 0">
           <ChatValue :value="event.cultureGain" />
