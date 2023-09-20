@@ -1,3 +1,33 @@
+export interface UnitProperties {
+  leadership?: number
+  sociality?: number
+  extraCards?: number
+  community?: number
+  unity?: boolean
+  migration?: number
+  resourceBonus?: {
+    fish?: number
+    deer?: number
+    aurochs?: number
+    mammoth?: number
+  },
+  scent?: {
+    fish?: number
+    deer?: number
+    aurochs?: number
+    mammoth?: number
+  },
+  sneak?: number
+  mentoring?: number
+  cultureLevelIncrease?: number
+  hideaway?: number
+  reflection?: boolean
+  pathfinding?: boolean
+  valor?: number
+  cultureResistance?: boolean
+  cultureRaid?: boolean
+}
+
 export interface Unit {
   foodCost: number
   cultureLevel?: number
@@ -7,35 +37,7 @@ export interface Unit {
   hunting?: number
   fishing?: number
   raidFoodSteal?: number
-  properties?: {
-    leadership?: number
-    sociality?: number
-    extraCards?: number
-    community?: number
-    unity?: boolean
-    migration?: number
-    resourceBonus?: {
-      fish?: number
-      deer?: number
-      aurochs?: number
-      mammoth?: number
-    },
-    scent?: {
-      fish?: number
-      deer?: number
-      aurochs?: number
-      mammoth?: number
-    },
-    sneak?: number
-    mentoring?: number
-    cultureLevelIncrease?: number
-    hideaway?: number
-    reflection?: boolean
-    pathfinding?: boolean
-    valor?: number
-    cultureResistance?: boolean
-    cultureRaid?: boolean
-  }
+  properties?: UnitProperties
   villageAction?: {
     food?: number
     culture?: number

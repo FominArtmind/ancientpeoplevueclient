@@ -31,20 +31,60 @@
   /* background-color: rgba(154, 182, 189, 0.35); */
   background-color: rgba(118, 139, 144, 0.35);
   font-size: 0.35rem;
+  line-height: 100%;
 }
-@container (min-width: 40px) {
+@container (min-width: 55px) {
+  .card-background {
+    font-size: 0.425rem !important;
+    line-height: 100%;
+  }
+}
+@container (min-width: 70px) {
   .card-background {
     font-size: 0.5rem !important;
+    line-height: 110%;
   }
 }
-@container (min-width: 80px) {
+@container (min-width: 85px) {
+  .card-background {
+    font-size: 0.6rem !important;
+    line-height: 110%;
+  }
+}
+@container (min-width: 95px) {
+  .card-background {
+    font-size: 0.65rem !important;
+    line-height: 110%;
+  }
+}
+@container (min-width: 105px) {
   .card-background {
     font-size: 0.7rem !important;
+    line-height: 120%;
   }
 }
-@container (min-width: 120px) {
+@container (min-width: 115px) {
+  .card-background {
+    font-size: 0.775rem !important;
+    line-height: 120%;
+  }
+}
+@container (min-width: 130px) {
+  .card-background {
+    font-size: 0.85rem !important;
+    line-height: 120%;
+  }
+}
+@container (min-width: 140px) {
+  .card-background {
+    font-size: 0.925rem !important;
+    line-height: 120%;
+  }
+}
+@container (min-width: 150px) {
   .card-background {
     font-size: 1rem !important;
+    line-height: 120%;
   }
 }
 .card {

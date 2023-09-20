@@ -98,8 +98,8 @@ const unitCards2 = ref<Card[]>([
   { id: 0, type: 'patrol'},
   { id: 0, type: 'chiropractor'},
   { id: 0, type: 'handyman'},
-  { id: 0, type: 'ancient'},
-  { id: 0, type: 'hunter'},
+  { id: 0, type: 'bear-son'},
+  { id: 0, type: 'chieftain'}
 ]);
 const unitCards3 = ref<Card[]>([
   { id: 0, type: 'watchdog'},
@@ -107,12 +107,12 @@ const unitCards3 = ref<Card[]>([
   { id: 0, type: 'pathfinder'},
   { id: 0, type: 'warrior'},
   { id: 0, type: 'amazon'},
-  { id: 0, type: 'bear-son'},
+  { id: 0, type: 'ancient'},
   { id: 0, type: 'settler'},
   { id: 0, type: 'wet-nurse'},
   { id: 0, type: 'beater'},
   { id: 0, type: 'shaman'},
-  { id: 0, type: 'chieftain'}
+  { id: 0, type: 'hunter'}
 ]);
 
 const positionStyle = computed(() => ({
