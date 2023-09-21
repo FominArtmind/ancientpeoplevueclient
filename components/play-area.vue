@@ -4,9 +4,7 @@
       <li><b>Hunt</b></li>
       <li>Pass</li>
     </ul>
-    <div class="flex">
-      <CardResource v-for="card in resourceCards" :card="card"/>
-    </div>
+    <Resources :resources="resources" :deckSize="resourcesDeckSize" :players="playerResources"></Resources>
     <div class="flex">
       <CardUnit v-for="card in unitCards" :card="card"/>
     </div>
@@ -51,12 +49,38 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { Card } from "../types/game";
+import { Card, PlayerResources } from "../types/game";
 
 let menu = ref<HTMLUListElement>();
 let viewMenu = ref(false);
 let top = ref("0px");
 let left = ref("0px");
+
+const resources = ref<Card[]>([
+{ id: 0, type: 'fish'},
+  { id: 0, type: 'fish'},
+  { id: 0, type: 'fish'},
+  { id: 0, type: 'fish'},
+  { id: 0, type: 'deer'},
+  { id: 0, type: 'aurochs'},
+  { id: 0, type: 'mammoth'}
+]);
+const resourcesDeckSize = ref(12);
+const playerResources= ref<PlayerResources[]>([
+  {
+    nick: "Kuzma",
+    resources: [
+      { id: 0, type: 'deer'},
+      { id: 0, type: 'deer'}
+    ]
+  },
+  {
+    nick: "Arseniy",
+    resources: [
+      { id: 0, type: 'aurochs'}
+    ]
+  },
+]);
 
 const resourceCards = ref<Card[]>([
   { id: 0, type: 'fish'},

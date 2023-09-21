@@ -79,6 +79,11 @@ export interface Game {
   lastPlayerActionTime: number
 }
 
+export interface PlayerResources {
+  nick: string
+  resources: Card[]
+}
+
 // DB private data
 // export interface Player {
 //   nick: string
