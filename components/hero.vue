@@ -47,7 +47,8 @@ const timeSpent = computed(() => {
 
 const heroAreaMaxWidthStyle = computed(() => {
   const columns = props.village.length + props.hand.length;
-  const maxWidth = Math.max(columns, 5) * 160 + 32;
+  const effectiveColumns = Math.max(columns, 5);
+  const maxWidth = effectiveColumns * 160 + (effectiveColumns + 2) * 4 + 32;
   return {
     "max-width": maxWidth + "px"
   };

@@ -19,6 +19,7 @@ body {
   width: 100%;
   display: grid;
   grid-column-gap: 0.25rem;
+  grid-row-gap: 0.25rem;
   padding-left: 0.25rem;
   padding-right: 0.25rem;
 }

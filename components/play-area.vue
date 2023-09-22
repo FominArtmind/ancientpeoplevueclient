@@ -4,7 +4,11 @@
       <li><b>Hunt</b></li>
       <li>Pass</li>
     </ul>
-    <Resources :resources="resources" :deckSize="resourcesDeckSize" :players="playerResources"></Resources>
+    <!--<div class="flex">
+      <CardDevelopment v-for="card in developmentCards" :card="card"/>
+    </div> -->
+    <!-- <Resources :resources="resources" :deckSize="resourcesDeckSize" :players="playerResources"></Resources> -->
+    <Draft :draft="draft" />
     <Hero :hand="hand" :deckSize="deckSize" :village="village" :food="food" :culture="culture" :awayCardsCount="awayCardsCount" :timeTakenMs="timeTakenMs" />
     <!--<div class="flex">
       <CardUnit v-for="card in unitCards" :card="card"/>
@@ -66,8 +70,33 @@ let viewMenu = ref(false);
 let top = ref("0px");
 let left = ref("0px");
 
+const developmentCards = ref<Card[]>([
+  { id: 0, type: 'tools'},
+  { id: 0, type: 'new-lands'},
+  { id: 0, type: 'rock-painting'}
+]);
+const draft = ref<Card[]>([
+  { id: 0, type: 'mentor'},
+  { id: 0, type: 'cannibal'},
+  { id: 0, type: 'patrol'},
+  { id: 0, type: 'chiropractor'},
+  { id: 0, type: 'handyman'},
+  { id: 0, type: 'bear-son'},
+  { id: 0, type: 'chieftain'},
+  { id: 0, type: 'watchdog'},
+  { id: 0, type: 'engraver'},
+  { id: 0, type: 'pathfinder'},
+  { id: 0, type: 'warrior'},
+  { id: 0, type: 'amazon'},
+  { id: 0, type: 'ancient'},
+  { id: 0, type: 'settler'},
+  // { id: 0, type: 'wet-nurse'},
+  // { id: 0, type: 'beater'},
+  // { id: 0, type: 'shaman'},
+  // { id: 0, type: 'hunter'}
+]);
 const resources = ref<Card[]>([
-{ id: 0, type: 'fish'},
+  { id: 0, type: 'fish'},
   { id: 0, type: 'fish'},
   { id: 0, type: 'fish'},
   { id: 0, type: 'fish'},
