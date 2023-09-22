@@ -5,7 +5,10 @@
       <li>Pass</li>
     </ul>
     <Resources :resources="resources" :deckSize="resourcesDeckSize" :players="playerResources"></Resources>
-    <div class="flex">
+    <div class="hero-spacing">
+      <Hero :hand="hand" :deckSize="deckSize" :village="village" :food="food" :culture="culture" :awayCardsCount="awayCardsCount" :timeTakenMs="timeTakenMs" />
+    </div>
+    <!--<div class="flex">
       <CardUnit v-for="card in unitCards" :card="card"/>
     </div>
     <div class="flex">
@@ -13,7 +16,7 @@
     </div>
     <div class="flex">
       <CardUnit v-for="card in unitCards3" :card="card"/>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -45,11 +48,20 @@
   background: #1E88E5;
   color: #FAFAFA;
 }
+
+.village {
+  display: inline-block;
+  min-height: 240px;
+}
+.hand {
+  display: inline-block;
+  min-height: 240px;
+}
 </style>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { Card, PlayerResources } from "../types/game";
+import { Card, VillageCard, PlayerResources } from "../types/game";
 
 let menu = ref<HTMLUListElement>();
 let viewMenu = ref(false);
@@ -66,7 +78,7 @@ const resources = ref<Card[]>([
   { id: 0, type: 'mammoth'}
 ]);
 const resourcesDeckSize = ref(12);
-const playerResources= ref<PlayerResources[]>([
+const playerResources = ref<PlayerResources[]>([
   {
     nick: "Kuzma",
     resources: [
@@ -81,6 +93,23 @@ const playerResources= ref<PlayerResources[]>([
     ]
   },
 ]);
+
+const hand = ref<Card[]>([
+  { id: 0, type: 'fire-keeper'},
+  { id: 0, type: 'inhabitant'}
+]);
+const deckSize = ref(2);
+
+const village = ref<VillageCard[]>([
+  { card: { id: 0, type: 'chiropractor' }, rotated: true },
+  { card: { id: 0, type: 'fire-keeper' } },
+  { card: { id: 0, type: 'leader' } },
+  { card: { id: 0, type: 'inhabitant' } }
+]);
+const food = ref(12);
+const culture = ref(7);
+const awayCardsCount = ref(0);
+const timeTakenMs = ref(1000 * 445);
 
 const resourceCards = ref<Card[]>([
   { id: 0, type: 'fish'},

@@ -1,5 +1,5 @@
 <template>
-  <div class="card-container m-1">
+  <div class="card-container">
     <!--<div
       class="w-full h-full card-bg-image block max-w-sm bg-white bg-cover p-6 shadow-lg dark:bg-neutral-700"
       :class="{ 'border-4': selected, 'card-bg-image-selected': selected }"
@@ -99,7 +99,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const props = defineProps(['clickable']);
+const props = defineProps<{ clickable: boolean }>();
 const msg = ref('Hello World!');
 const selected = ref(false);
 </script>

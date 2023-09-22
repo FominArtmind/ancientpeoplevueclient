@@ -1,8 +1,8 @@
 <template>
-  <CardBody>
+  <CardBody :clickable="true" >
     <h3 v-if="player" class="player-nick">{{ player }}</h3>
     <div class="w-full image-container bg-contain bg-no-repeat" data-te-toggle="tooltip" v-bind:title="resource?.title" :style="{ 'background-image': 'url(/gamedata/resources/views/' + card.type + '-white.png)' }"></div>
-    <div>
+    <div class="font-larger line-height-fix">
       <div>
         <Info v-if="resource?.hunting" :tooltip="'Requires ' + resource?.peopleCost + ' hunting in total to get'">
           <Icon v-for="n in resource?.peopleCost" name="teenyicons:arrow-up-outline"/>
@@ -29,6 +29,10 @@
   margin-bottom: 10%;
   margin-top: 20%;
   width: 100%;
+}
+
+.line-height-fix {
+  line-height: 140%;
 }
 
 .info-padding {

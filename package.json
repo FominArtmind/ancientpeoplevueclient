@@ -12,6 +12,7 @@
     "@nuxt/content": "^2.8.2",
     "@nuxt/devtools": "latest",
     "@nuxtjs/tailwindcss": "^6.8.0",
+    "@types/luxon": "^3.3.2",
     "@types/node": "^20.6.0",
     "autoprefixer": "^10.4.15",
     "nuxt": "^3.7.1",
@@ -24,6 +25,7 @@
   "dependencies": {
     "flowbite": "^1.8.1",
     "flowbite-vue": "^0.0.17-next.6",
+    "luxon": "^3.4.3",
     "tw-elements": "^1.0.0"
   }
 }
