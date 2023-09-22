@@ -29,83 +29,9 @@
 
 <style scoped>
 .hero-area {
-  min-height: 240px;
   position: absolute;
   bottom: 0;
   width: calc(80% - 2px);
-}
-.card-grid {
-  width: 100%;
-  display: grid;
-  grid-column-gap: 0.25rem;
-  padding-left: 0.25rem;
-  padding-right: 0.25rem;
-}
-
-.adaptive-text-container {
-  container-type: inline-size;
-}
-
-.adaptive-text {
-  font-size: 0.425rem;
-  line-height: 100%;
-  text-align: center;
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
-}
-@container (min-width: 55px) {
-  .adaptive-text {
-    font-size: 0.5rem !important;
-    line-height: 100%;
-  }
-}
-@container (min-width: 70px) {
-  .adaptive-text {
-    font-size: 0.6rem !important;
-    line-height: 110%;
-  }
-}
-@container (min-width: 85px) {
-  .adaptive-text {
-    font-size: 0.65rem !important;
-    line-height: 110%;
-  }
-}
-@container (min-width: 95px) {
-  .adaptive-text {
-    font-size: 0.7rem !important;
-    line-height: 110%;
-  }
-}
-@container (min-width: 105px) {
-  .adaptive-text {
-    font-size: 0.775rem !important;
-    line-height: 120%;
-  }
-}
-@container (min-width: 115px) {
-  .adaptive-text {
-    font-size: 0.85rem !important;
-    line-height: 120%;
-  }
-}
-@container (min-width: 130px) {
-  .adaptive-text {
-    font-size: 0.925rem !important;
-    line-height: 120%;
-  }
-}
-@container (min-width: 140px) {
-  .adaptive-text {
-    font-size: 1rem !important;
-    line-height: 120%;
-  }
-}
-@container (min-width: 150px) {
-  .adaptive-text {
-    font-size: 1.2rem !important;
-    line-height: 120%;
-  }
 }
 </style>
 
@@ -121,13 +47,13 @@ const timeSpent = computed(() => {
 
 const heroAreaMaxWidthStyle = computed(() => {
   const columns = props.village.length + props.hand.length;
-  const maxWidth = Math.max(columns, 5) * 160 + 64;
+  const maxWidth = Math.max(columns, 5) * 160 + 32;
   return {
     "max-width": maxWidth + "px"
   };
 });
 const gridRowsStyle = computed(() => ({
-  "grid-template-columns": Array(props.village.length).fill('1fr').join(" ") + " 4rem " + Array(props.hand.length).fill('1fr').join(" ")
+  "grid-template-columns": Array(props.village.length).fill("1fr").join(" ") + " 2rem " + Array(props.hand.length).fill("1fr").join(" ")
 }));
 
 </script>

@@ -5,9 +5,7 @@
       <li>Pass</li>
     </ul>
     <Resources :resources="resources" :deckSize="resourcesDeckSize" :players="playerResources"></Resources>
-    <div class="hero-spacing">
-      <Hero :hand="hand" :deckSize="deckSize" :village="village" :food="food" :culture="culture" :awayCardsCount="awayCardsCount" :timeTakenMs="timeTakenMs" />
-    </div>
+    <Hero :hand="hand" :deckSize="deckSize" :village="village" :food="food" :culture="culture" :awayCardsCount="awayCardsCount" :timeTakenMs="timeTakenMs" />
     <!--<div class="flex">
       <CardUnit v-for="card in unitCards" :card="card"/>
     </div>
