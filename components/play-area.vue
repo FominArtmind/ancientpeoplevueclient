@@ -1,9 +1,22 @@
 <template>
-  <div class="min-h-screen border-l-2 border-white" @contextmenu="openMenu">
+  <div class="min-h-screen border-l-2 border-white flex justify-between flex-col" @contextmenu="openMenu">
     <ul id="right-click-menu" tabindex="-1" ref="menu" v-if="viewMenu" class="focus:outline-none cursor-pointer" :style="positionStyle" @blur="closeMenu">
       <li><b>Hunt</b></li>
       <li>Pass</li>
     </ul>
+    <!-- <div class="flex">
+      <Opponent :player="opponent1" :totalPlayers="5"/>
+      <Opponent :player="opponent2" :totalPlayers="5"/>
+      <Opponent :player="opponent3" :totalPlayers="5"/>
+      <Opponent :player="opponent4" :totalPlayers="5"/>
+    </div> -->
+    <!-- <div class="flex">
+      <Opponent :player="opponent1" :totalPlayers="3"/>
+      <Opponent :player="opponent2" :totalPlayers="3"/>
+    </div> -->
+    <div class="flex">
+      <Opponent :player="opponent1" :totalPlayers="2"/>
+    </div>
     <!--<div class="flex">
       <CardDevelopment v-for="card in developmentCards" :card="card"/>
     </div> -->
@@ -63,12 +76,120 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { Card, VillageCard, PlayerResources } from "../types/game";
+import { Player, Card, VillageCard, PlayerResources } from "../types/game";
 
 let menu = ref<HTMLUListElement>();
 let viewMenu = ref(false);
 let top = ref("0px");
 let left = ref("0px");
+
+const opponent1 = ref<Player>({
+  nick: "Kuzma",
+  culture: 10,
+  food: 3,
+  village: [
+    { card: { id: 0, type: 'chiropractor' }, rotated: true },
+    { card: { id: 0, type: 'fire-keeper' } },
+    { card: { id: 0, type: 'leader' } },
+    { card: { id: 0, type: 'inhabitant' } },
+    { card: { id: 0, type: 'inhabitant' } },
+    { card: { id: 0, type: 'inhabitant' } }
+  ],
+  deckSize: 1,
+  handSize: 2,
+  awayCardsCount: 0,
+  awayResources: [],
+  state: {
+    playingCard: true,
+    passed: false,
+    leadership: [],
+    unity: "",
+    migrationChoose: [],
+    pathfindingChoose: false,
+    sociality: 0
+  },
+  timeTakenMs: 1000 * 425
+});
+const opponent2 = ref<Player>({
+  nick: "Sergey",
+  culture: 10,
+  food: 3,
+  village: [
+    { card: { id: 0, type: 'chiropractor' }, rotated: true },
+    { card: { id: 0, type: 'caveman' } },
+    { card: { id: 0, type: 'caveman' } },
+    { card: { id: 0, type: 'caveman' } },
+    { card: { id: 0, type: 'caveman' } },
+    { card: { id: 0, type: 'caveman' } },
+    { card: { id: 0, type: 'caveman' } },
+    { card: { id: 0, type: 'leader' } },
+    { card: { id: 0, type: 'inhabitant' } }
+  ],
+  deckSize: 0,
+  handSize: 0,
+  awayCardsCount: 0,
+  awayResources: [],
+  state: {
+    playingCard: true,
+    passed: false,
+    leadership: [],
+    unity: "",
+    migrationChoose: [],
+    pathfindingChoose: false,
+    sociality: 0
+  },
+  timeTakenMs: 1000 * 425
+});
+const opponent3 = ref<Player>({
+  nick: "Alex",
+  culture: 10,
+  food: 3,
+  village: [
+    { card: { id: 0, type: 'chiropractor' }, rotated: true },
+    { card: { id: 0, type: 'fire-keeper' } },
+    { card: { id: 0, type: 'leader' } },
+    { card: { id: 0, type: 'inhabitant' } }
+  ],
+  deckSize: 1,
+  handSize: 2,
+  awayCardsCount: 0,
+  awayResources: [],
+  state: {
+    playingCard: true,
+    passed: false,
+    leadership: [],
+    unity: "",
+    migrationChoose: [],
+    pathfindingChoose: false,
+    sociality: 0
+  },
+  timeTakenMs: 1000 * 425
+});
+const opponent4 = ref<Player>({
+  nick: "Alcho",
+  culture: 10,
+  food: 3,
+  village: [
+    { card: { id: 0, type: 'chiropractor' }, rotated: true },
+    { card: { id: 0, type: 'fire-keeper' } },
+    { card: { id: 0, type: 'leader' } },
+    { card: { id: 0, type: 'inhabitant' } }
+  ],
+  deckSize: 1,
+  handSize: 2,
+  awayCardsCount: 0,
+  awayResources: [],
+  state: {
+    playingCard: true,
+    passed: false,
+    leadership: [],
+    unity: "",
+    migrationChoose: [],
+    pathfindingChoose: false,
+    sociality: 0
+  },
+  timeTakenMs: 1000 * 425
+});
 
 const developmentCards = ref<Card[]>([
   { id: 0, type: 'tools'},
@@ -90,10 +211,10 @@ const draft = ref<Card[]>([
   { id: 0, type: 'amazon'},
   { id: 0, type: 'ancient'},
   { id: 0, type: 'settler'},
-  // { id: 0, type: 'wet-nurse'},
-  // { id: 0, type: 'beater'},
-  // { id: 0, type: 'shaman'},
-  // { id: 0, type: 'hunter'}
+  { id: 0, type: 'wet-nurse'},
+  { id: 0, type: 'beater'},
+  { id: 0, type: 'shaman'},
+  { id: 0, type: 'hunter'}
 ]);
 const resources = ref<Card[]>([
   { id: 0, type: 'fish'},

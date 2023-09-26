@@ -43,8 +43,8 @@ export interface Player {
   deckSize: number
   handSize: number
   awayCardsCount: number
-  awayFood: number
-  awayCulture: number
+  awayFood?: number
+  awayCulture?: number
   awayResources: Card[]
   state: PlayerState
   timeTakenMs: number

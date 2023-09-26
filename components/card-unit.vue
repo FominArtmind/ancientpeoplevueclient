@@ -16,6 +16,7 @@
       <template v-if="unit?.cultureExchange"><Info :tooltip="`${unit?.title} has culture exchange ${unit?.cultureExchange} (needed in raids, increases raid difference for determining culture gain by ${unit?.cultureExchange})`"><Icon v-for="n in unit?.cultureExchange" name="mdi:torch"/></Info></template>
       <template v-if="unit?.defense"><Info :tooltip="`${unit?.title} has defense ${unit?.defense} (needed in raids defending, increases raid defense dice throw by ${unit?.defense})`"><Icon v-for="n in unit?.defense" name="ic:round-shield"/></Info></template>
       <template v-if="unit?.raidFoodSteal"><Info :tooltip="`${unit?.title} has raid food steal ${unit?.hunting}`"><Icon name="uil:corner-up-right-alt"/>{{ unit?.raidFoodSteal }}</Info></template>
+      <template v-if="unit?.unique"><Info :tooltip="`${unit?.title} is unique - you can possess only one unit of such type in your deck`"><Icon name="mdi:star-four-points-outline"/></Info></template>
     </div>
     <div v-if="extraCards"><Info :tooltip="`${unit?.title} adds ${extraCards} extra unit cards from the deck to your hand`"><Icon v-for="n in extraCards" class="font-larger" name="mdi:plus-thick"/></Info></div>
     <div v-if="community"><Info :tooltip="`${unit?.title} opens ${community} unit cards from the deck, adds ${unit?.title} ones to your hand, other card types are put under the deck`">Community{{ community > 1 ? " " + community : "" }}</Info></div>
@@ -33,8 +34,7 @@
     <div v-if="hideaway"><Info :tooltip="`${unit?.title} hides up to {{ hideaway }} food on site from raiders`">Hideaway {{ hideaway }}</Info></div>
     <div v-if="valor"><Info :tooltip="`${unit?.title} gains ${valor} culture exchange for each defender when raids`">Valor{{ valor > 1 ? " " + valor : "" }}</Info></div>
     <div v-if="cultureResistance"><Info :tooltip="`${unit?.title} decreases total culture exchange of raiders by 1 for each raider`">Resistance</Info></div>
-    <div v-if="cultureRaid"><Info :tooltip="`${unit?.title} instantly transforms all the food gained in raid to culture`">Culture Raid</Info></div>
-    <div v-if="unit?.unique"><Info :tooltip="`${unit?.title} is unique - you can possess only one unit of such type in your deck`">Unique</Info></div>
+    <div v-if="cultureRaid"><Info :tooltip="`${unit?.title} instantly transforms all the food gained in raid to culture`">Domination</Info></div>
     <template v-if="unit?.villageAction">
       <div class="village-action">
         <div class="village-action-icon">
@@ -56,8 +56,8 @@
 <style scoped>
 .image-container {
   aspect-ratio: 5/4;
-  margin-bottom: -10%;
-  margin-top: 2.5%;
+  margin-bottom: -15%;
+  margin-top: 0%;
   width: 100%;
 }
 

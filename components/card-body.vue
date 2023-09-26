@@ -15,10 +15,15 @@
 
 <style scoped>
 .card-container {
-  aspect-ratio: 2/3;
+  aspect-ratio: 3/4;
   max-width: 160px;
   width: 100%;
   container-type: inline-size;
+}
+@media (max-width: 1366px) {
+  .card-container {
+    max-width: 120px;
+  }
 }
 
 /* .card-bg-image {

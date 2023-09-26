@@ -1,6 +1,8 @@
 <template>
   <div class="hero-area" :style="heroAreaMaxWidthStyle">
-    <h1 class="font-larger text-center">Village {{ food }}<span class="icon-fix"><Icon name="mdi:food-drumstick"/></span> {{ culture }}<span class="icon-fix"><Icon name="bi:fire"/></span>, away {{ awayCardsCount }} units, deck size: {{ deckSize }} - {{ timeSpent }}</h1>
+    <div class="adaptive-text-container">
+      <h1 class="adaptive-text text-center">Village {{ food }}<span class="icon-fix"><Icon name="mdi:food-drumstick"/></span> {{ culture }}<span class="icon-fix"><Icon name="bi:fire"/></span>, away {{ awayCardsCount }} units, deck size: {{ deckSize }} - {{ timeSpent }}</h1>
+    </div>
     <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
       <div class="adaptive-text-container" v-for="card in village">
         <CardUnit :card="card.card" />
@@ -29,9 +31,10 @@
 
 <style scoped>
 .hero-area {
-  position: absolute;
+  width: 100%;
+  /* position: absolute;
   bottom: 0;
-  width: calc(80% - 2px);
+  width: calc(80% - 2px); */
 }
 </style>
 
@@ -41,6 +44,23 @@ import { Card, VillageCard } from "../types/game";
 import { DateTime } from "luxon";
 
 const props = defineProps<{ hand: Card[], deckSize: number, village: VillageCard[], food: number, culture: number, awayCardsCount: number, timeTakenMs: number }>();
+
+const windowWidth = ref(window.innerWidth)
+const windowHeight = ref(window.innerHeight)
+
+const handleResize = () => {
+  windowWidth.value = window.innerWidth;
+  windowHeight.value = window.innerHeight;
+
+  console.log(windowWidth.value, windowHeight.value);
+}
+onMounted(() => {
+  window.addEventListener("resize", handleResize);
+})
+onUnmounted(() => {
+  window.removeEventListener("resize", handleResize);
+})
+
 const timeSpent = computed(() => {
   return DateTime.fromMillis(props.timeTakenMs).toFormat("m:ss");
 });
@@ -48,7 +68,8 @@ const timeSpent = computed(() => {
 const heroAreaMaxWidthStyle = computed(() => {
   const columns = props.village.length + props.hand.length;
   const effectiveColumns = Math.max(columns, 5);
-  const maxWidth = effectiveColumns * 160 + (effectiveColumns + 2) * 4 + 32;
+  const windowAdaptedCardMaxSize = Math.min(160, Math.round((windowHeight.value / 1080) * (windowHeight.value / windowWidth.value * 1920 / 1080) * 160));
+  const maxWidth = effectiveColumns * windowAdaptedCardMaxSize + (effectiveColumns + 2) * 4 + 32;
   return {
     "max-width": maxWidth + "px"
   };

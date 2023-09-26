@@ -37,7 +37,8 @@ const draftAreaMaxWidthStyle = computed(() => {
 });
 const gridRowsStyle = computed(() => {
   const totalCells = props.draft.length + 3;
-  const rowLengthCells = Math.max(totalCells <= 10 ? totalCells : Math.ceil(totalCells / 2), 5);
+  // const rowLengthCells = Math.max(totalCells, 10);
+  const rowLengthCells = Math.max(totalCells <= 10 ? totalCells : Math.max(Math.ceil(totalCells / 2), 10), 5);
   return {
     "grid-template-columns": `repeat(${rowLengthCells}, 1fr)`
   };
