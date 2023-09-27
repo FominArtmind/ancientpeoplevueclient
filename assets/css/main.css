@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow: hidden;
+}
+
 body {
   color: white;
 }
@@ -32,8 +36,6 @@ body {
   font-size: 0.425rem;
   line-height: 100%;
   text-align: center;
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
 }
 @container (min-width: 55px) {
   .adaptive-text {

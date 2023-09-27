@@ -1,6 +1,6 @@
 <template>
   <div class="resources-area" :style="resourcesAreaMaxWidthStyle">
-    <h1 class="font-larger text-center">Resources (deck size: {{ deckSize }})</h1>
+    <h1 class="font-larger text-center pb-2 pt-2">Resources (deck size: {{ deckSize }})</h1>
     <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
       <div class="adaptive-text-container" v-for="card in resources">
         <CardResource :card="card" />
@@ -19,6 +19,7 @@
 
 <style scoped>
 .resources-area {
+  padding-bottom: 0.25rem;
   width: 100%;
 }
 </style>

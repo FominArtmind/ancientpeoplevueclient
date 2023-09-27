@@ -1,17 +1,23 @@
 <template>
-  <div class="hero-area" :style="heroAreaMaxWidthStyle">
-    <div class="adaptive-text-container">
-      <h1 class="adaptive-text text-center">Village {{ food }}<span class="icon-fix"><Icon name="mdi:food-drumstick"/></span> {{ culture }}<span class="icon-fix"><Icon name="bi:fire"/></span>, away {{ awayCardsCount }} units, deck size: {{ deckSize }} - {{ timeSpent }}</h1>
-    </div>
-    <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
-      <div class="adaptive-text-container" v-for="card in village">
-        <CardUnit :card="card.card" />
-        <div class="adaptive-text">{{ card.rotated ? 'Rotated' : '' }}</div>
+  <div class="hero-area-container">
+    <div class="hero-area" :style="heroAreaMaxWidthStyle">
+      <div class="adaptive-text-container">
+        <h1 class="adaptive-text text-center pb-2 pt-2">Village {{ food }}<span class="icon-fix"><Icon name="mdi:food-drumstick"/></span> {{ culture }}<span class="icon-fix"><Icon name="bi:fire"/></span>, away {{ awayCardsCount }} units, deck size: {{ deckSize }} - {{ timeSpent }}</h1>
       </div>
-      <div></div>
-      <div class="adaptive-text-container" v-for="card in hand">
-        <CardUnit :card="card" />
-        <div class="adaptive-text">Hand</div>
+      <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
+        <div class="adaptive-text-container" v-for="card in village">
+          <CardUnit :card="card.card" :rotated="card.rotated" />
+          <!--<div class="adaptive-text">{{ card.rotated ? 'Rotated' : '' }}</div> -->
+        </div>
+        <template v-if="hand.length > 0">
+          <div class="flex justify-center items-center">
+            <div class="hand-arrow"><Icon name="mdi:arrow-left-bold-outline"/></div>
+          </div>
+          <div class="adaptive-text-container" v-for="card in hand">
+            <CardUnit :card="card" />
+            <!--<div class="adaptive-text">Hand</div> -->
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -30,36 +36,43 @@
 </template>
 
 <style scoped>
+.hero-area-container {
+  border-top: 1px solid white;
+  padding-bottom: 0.25rem;
+  width: 100%;
+}
 .hero-area {
   width: 100%;
   /* position: absolute;
   bottom: 0;
   width: calc(80% - 2px); */
 }
+
+.hand-arrow {
+  font-size: 2.5rem;
+}
+@media (max-width: 1023px) {
+  .hand-arrow {
+    font-size: 1rem;
+  }
+}
+@media (min-width: 1024px) and (max-width: 1365px) {
+  .hand-arrow {
+    font-size: 1.75rem;
+  }
+}
 </style>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, inject } from "vue";
 import { Card, VillageCard } from "../types/game";
+// @ts-ignore
 import { DateTime } from "luxon";
 
 const props = defineProps<{ hand: Card[], deckSize: number, village: VillageCard[], food: number, culture: number, awayCardsCount: number, timeTakenMs: number }>();
 
-const windowWidth = ref(window.innerWidth)
-const windowHeight = ref(window.innerHeight)
-
-const handleResize = () => {
-  windowWidth.value = window.innerWidth;
-  windowHeight.value = window.innerHeight;
-
-  console.log(windowWidth.value, windowHeight.value);
-}
-onMounted(() => {
-  window.addEventListener("resize", handleResize);
-})
-onUnmounted(() => {
-  window.removeEventListener("resize", handleResize);
-})
+const windowWidth = inject<globalThis.Ref<number>>("windowWidth", ref(0));
+const windowHeight = inject<globalThis.Ref<number>>("windowHeight", ref(0));
 
 const timeSpent = computed(() => {
   return DateTime.fromMillis(props.timeTakenMs).toFormat("m:ss");
@@ -68,7 +81,9 @@ const timeSpent = computed(() => {
 const heroAreaMaxWidthStyle = computed(() => {
   const columns = props.village.length + props.hand.length;
   const effectiveColumns = Math.max(columns, 5);
-  const windowAdaptedCardMaxSize = Math.min(160, Math.round((windowHeight.value / 1080) * (windowHeight.value / windowWidth.value * 1920 / 1080) * 160));
+  const cardMaxSize = 180; // windowWidth.value > 1366 ? 180 : 120;
+  const windowAdaptedCardMaxSize = Math.min(cardMaxSize, Math.round((windowHeight.value / 1080) * (windowHeight.value / windowWidth.value * 1920 / 1080) * cardMaxSize));
+  console.log(windowAdaptedCardMaxSize);
   const maxWidth = effectiveColumns * windowAdaptedCardMaxSize + (effectiveColumns + 2) * 4 + 32;
   return {
     "max-width": maxWidth + "px"

@@ -20,15 +20,28 @@
 
 <script setup lang="ts">
 import "tw-elements/dist/css/tw-elements.min.css";
-import { onMounted } from "vue";
+import { onMounted, provide } from "vue";
 // @ts-ignore
 import { Tooltip, initTE } from "tw-elements";
 import { ref } from "vue";
 import { Game } from "./types/game";
 
+const windowWidth = ref(window.innerWidth)
+const windowHeight = ref(window.innerHeight)
+
+const handleResize = () => {
+  windowWidth.value = window.innerWidth;
+  windowHeight.value = window.innerHeight;
+}
 onMounted(() => {
   initTE({ Tooltip });
+  window.addEventListener("resize", handleResize);
 });
+onUnmounted(() => {
+  window.removeEventListener("resize", handleResize);
+});
+provide("windowWidth", windowWidth);
+provide("windowHeight", windowHeight);
 
 const game = ref<Game>({
   id: "id",

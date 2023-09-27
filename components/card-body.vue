@@ -1,5 +1,5 @@
 <template>
-  <div class="card-container">
+  <div class="card-container" :class="{ 'rotated': rotated }" data-te-toggle="tooltip" v-bind:title="rotated ? `Rotated: can't defend raids and raid themselves, can't perform site actions` : ''">
     <!--<div
       class="w-full h-full card-bg-image block max-w-sm bg-white bg-cover p-6 shadow-lg dark:bg-neutral-700"
       :class="{ 'border-4': selected, 'card-bg-image-selected': selected }"
@@ -16,14 +16,14 @@
 <style scoped>
 .card-container {
   aspect-ratio: 3/4;
-  max-width: 160px;
+  max-width: 180px;
   width: 100%;
   container-type: inline-size;
 }
 @media (max-width: 1366px) {
-  .card-container {
+  /* .card-container {
     max-width: 120px;
-  }
+  } */
 }
 
 /* .card-bg-image {
@@ -99,12 +99,16 @@
 .card-selected {
   border: 2px solid rgb(224, 240, 243);
 }
+
+.rotated {
+  transform: rotate(15deg) scale(0.75);
+}
 </style>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const props = defineProps<{ clickable: boolean }>();
+const props = defineProps<{ clickable: boolean, rotated?: boolean }>();
 const msg = ref('Hello World!');
 const selected = ref(false);
 </script>

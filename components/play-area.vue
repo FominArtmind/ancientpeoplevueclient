@@ -4,19 +4,19 @@
       <li><b>Hunt</b></li>
       <li>Pass</li>
     </ul>
-    <!-- <div class="flex">
+    <div class="flex">
       <Opponent :player="opponent1" :totalPlayers="5"/>
       <Opponent :player="opponent2" :totalPlayers="5"/>
       <Opponent :player="opponent3" :totalPlayers="5"/>
       <Opponent :player="opponent4" :totalPlayers="5"/>
-    </div> -->
+    </div>
     <!-- <div class="flex">
       <Opponent :player="opponent1" :totalPlayers="3"/>
       <Opponent :player="opponent2" :totalPlayers="3"/>
     </div> -->
-    <div class="flex">
+    <!-- <div class="flex">
       <Opponent :player="opponent1" :totalPlayers="2"/>
-    </div>
+    </div> -->
     <!--<div class="flex">
       <CardDevelopment v-for="card in developmentCards" :card="card"/>
     </div> -->

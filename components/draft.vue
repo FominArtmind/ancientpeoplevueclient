@@ -1,6 +1,6 @@
 <template>
   <div class="draft-area" :style="draftAreaMaxWidthStyle">
-    <h1 class="font-larger text-center">Draft</h1>
+    <h1 class="font-larger text-center pb-2 pt-2">Draft</h1>
     <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
       <CardDevelopment v-for="card in developmentCards" :card="card"/>
       <CardUnit v-for="card in draft" :card="card" />
@@ -10,6 +10,7 @@
 
 <style scoped>
 .draft-area {
+  padding-bottom: 0.25rem;
   width: 100%;
 }
 </style>
@@ -17,6 +18,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { Card, VillageCard } from "../types/game";
+// @ts-ignore
 import { DateTime } from "luxon";
 
 const props = defineProps<{ draft: Card[] }>();

@@ -1,5 +1,5 @@
 <template>
-  <CardBody :clickable="true" :status="status">
+  <CardBody :clickable="true" :rotated="rotated">
     <div class="">
       <Info class="unit-cost" :tooltip="`${unit?.title} costs ${unit?.foodCost} food on draft`">
         <div class="food-cost">{{unit?.foodCost}}</div>
@@ -117,7 +117,7 @@ import { Card } from "../types/game";
 import { Unit, UnitProperties } from "../types/unit";
 import { capitalize } from "../utils/capitalize";
 
-const props = defineProps<{ card: Card, status?: string }>();
+const props = defineProps<{ card: Card, rotated?: boolean }>();
 
 const { data } = await useAsyncData("units", () => queryContent("gamedata", "units", "cards").find());
 const units: Unit[] = (data as any)._rawValue;
