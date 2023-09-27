@@ -91,3 +91,7 @@ body {
     line-height: 120%;
   }
 }
+
+.active-player {
+  color: #b7ff57
+}

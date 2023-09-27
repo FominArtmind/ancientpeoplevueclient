@@ -1,7 +1,7 @@
 <template>
   <div class="opponent-area" :class="{ 'opponent-area-multiple-players': totalPlayers > 2 }" :style="opponentAreaMaxWidthStyle">
     <div class="adaptive-text-container">
-      <h1 class="adaptive-text text-center pt-2 pb-2">{{ player.nick }} {{ player.food }}<span class="icon-fix"><Icon name="mdi:food-drumstick"/></span> {{ player.culture }}<span class="icon-fix"><Icon name="bi:fire"/></span>, away {{ player.awayCardsCount }} units, deck size: {{ player.deckSize }} - {{ timeSpent }}</h1>
+      <h1 class="adaptive-text text-center pt-2 pb-2">{{ player.nick }} {{ player.food }}<span class="icon-fix"><Icon name="mdi:food-drumstick"/></span> {{ player.culture }}<span class="icon-fix"><Icon name="bi:fire"/></span> away {{ player.awayCardsCount }} deck {{ player.deckSize }} - {{ timeSpent }}</h1>
     </div>
     <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
       <div class="adaptive-text-container" v-for="card in player.village">

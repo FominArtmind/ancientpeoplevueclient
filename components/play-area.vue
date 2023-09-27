@@ -22,7 +22,7 @@
     </div> -->
     <!-- <Resources :resources="resources" :deckSize="resourcesDeckSize" :players="playerResources"></Resources> -->
     <Draft :draft="draft" />
-    <Hero :hand="hand" :deckSize="deckSize" :village="village" :food="food" :culture="culture" :awayCardsCount="awayCardsCount" :timeTakenMs="timeTakenMs" />
+    <Hero :hand="hand" :deckSize="deckSize" :village="village" :food="food" :culture="culture" :awayCardsCount="awayCardsCount" :timeTakenMs="timeTakenMs" :action="'Play card from hand'" />
     <!--<div class="flex">
       <CardUnit v-for="card in unitCards" :card="card"/>
     </div>

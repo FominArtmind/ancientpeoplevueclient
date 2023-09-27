@@ -2,7 +2,7 @@
   <div class="hero-area-container">
     <div class="hero-area" :style="heroAreaMaxWidthStyle">
       <div class="adaptive-text-container">
-        <h1 class="adaptive-text text-center pb-2 pt-2">Village {{ food }}<span class="icon-fix"><Icon name="mdi:food-drumstick"/></span> {{ culture }}<span class="icon-fix"><Icon name="bi:fire"/></span>, away {{ awayCardsCount }} units, deck size: {{ deckSize }} - {{ timeSpent }}</h1>
+        <h1 class="adaptive-text text-center pb-2 pt-2">Village {{ food }}<span class="icon-fix"><Icon name="mdi:food-drumstick"/></span> {{ culture }}<span class="icon-fix"><Icon name="bi:fire"/></span> away {{ awayCardsCount }} deck {{ deckSize }} - {{ timeSpent }}<span class="inline-block pl-2" :class="{ 'action-required': action }">{{ action ? action : 'Wait for other players' }}</span></h1>
       </div>
       <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
         <div class="adaptive-text-container" v-for="card in village">
@@ -14,7 +14,7 @@
             <div class="hand-arrow"><Icon name="mdi:arrow-left-bold-outline"/></div>
           </div>
           <div class="adaptive-text-container" v-for="card in hand">
-            <CardUnit :card="card" />
+            <CardUnit :card="card" :suggested="true" />
             <!--<div class="adaptive-text">Hand</div> -->
           </div>
         </template>
@@ -61,6 +61,13 @@
     font-size: 1.75rem;
   }
 }
+
+@keyframes blink { 
+  50% { color: #c4ecf8; } 
+}
+.action-required {
+  animation: blink 1.75s infinite ease;
+}
 </style>
 
 <script setup lang="ts">
@@ -69,7 +76,7 @@ import { Card, VillageCard } from "../types/game";
 // @ts-ignore
 import { DateTime } from "luxon";
 
-const props = defineProps<{ hand: Card[], deckSize: number, village: VillageCard[], food: number, culture: number, awayCardsCount: number, timeTakenMs: number }>();
+const props = defineProps<{ hand: Card[], deckSize: number, village: VillageCard[], food: number, culture: number, awayCardsCount: number, timeTakenMs: number, action: string }>();
 
 const windowWidth = inject<globalThis.Ref<number>>("windowWidth", ref(0));
 const windowHeight = inject<globalThis.Ref<number>>("windowHeight", ref(0));

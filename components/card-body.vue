@@ -6,7 +6,7 @@
       @click="selected = !selected"
     >-->
     <div class="w-full h-full card-background">
-      <div class="w-full h-full p-1 card text-center" :class="{ 'card-selected': selected }" @click="selected = !selected">
+      <div class="w-full h-full p-1 card text-center" :class="{ 'card-suggested': suggested, 'card-selected': selected }" @click="selected = !selected">
         <slot />
       </div>
     </div>
@@ -99,6 +99,12 @@
 .card-selected {
   border: 2px solid rgb(224, 240, 243);
 }
+@keyframes blink { 
+  50% { border-color: #ffffff; } 
+}
+.card-suggested {
+  animation: blink 1.75s infinite ease;
+}
 
 .rotated {
   transform: rotate(15deg) scale(0.75);
@@ -108,7 +114,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const props = defineProps<{ clickable: boolean, rotated?: boolean }>();
+const props = defineProps<{ clickable: boolean, rotated?: boolean, suggested?: boolean }>();
 const msg = ref('Hello World!');
 const selected = ref(false);
 </script>

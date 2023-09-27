@@ -1,6 +1,6 @@
 <template>
   <div class="scrollable-div overflow-y-auto font-light">
-    <div class="scrollable-div-inside">
+    <div ref="chatElement" class="scrollable-div-inside">
       <ChatItem v-for="event in events" :event="event"/>
     </div>
   </div>
@@ -31,7 +31,9 @@
 </style>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+
+const chatElement = ref<HTMLDivElement>();
 
 // const props = defineProps({
 //   // item: ChatItem
@@ -266,4 +268,15 @@ const events = ref([
   }
 ]);
 const selected = ref(false);
+
+onMounted(() => {
+  scrollToLastChatItem();
+});
+
+function scrollToLastChatItem() {
+  const lastChildElement = chatElement.value?.lastElementChild;
+  lastChildElement?.scrollIntoView({
+    behavior: "smooth"
+  });
+}
 </script>
