@@ -6,7 +6,7 @@
       @click="selected = !selected"
     >-->
     <div class="w-full h-full card-background">
-      <div class="w-full h-full p-1 card text-center" :class="{ 'card-suggested': suggested, 'card-selected': selected }" @click="selected = !selected">
+      <div class="w-full h-full p-1 card text-center" :class="{ 'card-suggested': suggested, 'card-selected': selectable && selected }" @click="selectable ? selected = !selected : undefined">
         <slot />
       </div>
     </div>
@@ -114,7 +114,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const props = defineProps<{ clickable: boolean, rotated?: boolean, suggested?: boolean }>();
+const props = defineProps<{ selectable: boolean, rotated?: boolean, suggested?: boolean }>();
 const msg = ref('Hello World!');
 const selected = ref(false);
 </script>

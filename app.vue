@@ -22,7 +22,7 @@
 import "tw-elements/dist/css/tw-elements.min.css";
 import { onMounted, provide } from "vue";
 // @ts-ignore
-import { Tooltip, initTE } from "tw-elements";
+import { Tooltip, Popover, Ripple, initTE } from "tw-elements";
 import { ref } from "vue";
 import { Game } from "./types/game";
 
@@ -34,7 +34,7 @@ const handleResize = () => {
   windowHeight.value = window.innerHeight;
 }
 onMounted(() => {
-  initTE({ Tooltip });
+  initTE({ Tooltip, Popover, Ripple });
   window.addEventListener("resize", handleResize);
 });
 onUnmounted(() => {

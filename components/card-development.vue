@@ -1,5 +1,5 @@
 <template>
-  <CardBody :clickable="true" >
+  <CardBody>
     <div class="w-full image-container bg-contain bg-no-repeat" data-te-toggle="tooltip" v-bind:title="development?.title" :style="{ 'background-image': 'url(/gamedata/actions/views/' + card.type + '-white.png)' }"></div>
     <div class="font-larger line-height-fix">
       <Info :tooltip="`Requires ${development?.foodCost} food to gain`">

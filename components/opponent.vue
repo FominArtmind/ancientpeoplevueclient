@@ -1,7 +1,31 @@
 <template>
   <div class="opponent-area" :class="{ 'opponent-area-multiple-players': totalPlayers > 2 }" :style="opponentAreaMaxWidthStyle">
     <div class="adaptive-text-container">
-      <h1 class="adaptive-text text-center pt-2 pb-2">{{ player.nick }} {{ player.food }}<span class="icon-fix"><Icon name="mdi:food-drumstick"/></span> {{ player.culture }}<span class="icon-fix"><Icon name="bi:fire"/></span> away {{ player.awayCardsCount }} deck {{ player.deckSize }} - {{ timeSpent }}</h1>
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <h1 v-bind="props" id="player-header" class="adaptive-text text-center pt-2 pb-2 cursor-pointer" @click="dialog = true">
+            {{ player.nick }} {{ player.food }}<span class="icon-fix"><Icon name="mdi:food-drumstick"/></span>
+            {{ player.culture }}<span class="icon-fix"><Icon name="bi:fire"/></span>
+            <!-- {{ player.awayCardsCount }}<span class="icon-fix"><Icon name="bi:people"/></span> -->
+            {{ player.deckSize }}<span class="icon-fix"><Icon name="bi:files"/></span>
+            <!--  - {{ timeSpent }} -->
+          </h1>
+        </template>
+
+        <v-card>
+          <v-card-text>
+            <div>Food: {{ player.food }}</div>
+            <div>Culture: {{ player.culture }}</div>
+            <div>Hand Size: {{ player.handSize }}</div>
+            <div>Deck Size: {{ player.deckSize }}</div>
+            <div>Away Cards: {{ player.awayCardsCount }}</div>
+            <div>Time spent: {{ timeSpent }}</div>
+          </v-card-text>
+          <!--<v-card-actions>
+            <v-btn color="primary" block @click="dialog = false">Close Dialog</v-btn>
+          </v-card-actions> -->
+        </v-card>
+      </v-menu>
     </div>
     <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
       <div class="adaptive-text-container" v-for="card in player.village">
@@ -10,6 +34,19 @@
       </div>
     </div>
   </div>
+
+
+
+ <!-- <v-dialog v-model="dialog" width="auto" location-strategy="connected" location="end" attach="player-header">
+    <v-card>
+      <v-card-text>
+        dialog
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="primary" block @click="dialog = false">Close Dialog</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>-->
 </template>
 
 <style scoped>
@@ -32,6 +69,8 @@ import { Player } from "../types/game";
 import { DateTime } from "luxon";
 
 const props = defineProps<{ player: Player, totalPlayers: number }>();
+
+const dialog = ref(false);
 
 const windowWidth = inject<globalThis.Ref<number>>("windowWidth", ref(0));
 const windowHeight = inject<globalThis.Ref<number>>("windowHeight", ref(0));

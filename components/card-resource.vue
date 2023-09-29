@@ -1,5 +1,5 @@
 <template>
-  <CardBody :clickable="true" >
+  <CardBody :selectable="selectable" >
     <h3 v-if="player" class="player-nick">{{ player }}</h3>
     <div class="w-full image-container bg-contain bg-no-repeat" data-te-toggle="tooltip" v-bind:title="resource?.title" :style="{ 'background-image': 'url(/gamedata/resources/views/' + card.type + '-white.png)' }"></div>
     <div class="font-larger line-height-fix">
@@ -45,7 +45,7 @@ import { ref } from "vue";
 import { Card } from "../types/game";
 import { Resource } from "../types/resource";
 
-const props = defineProps<{ card: Card, player?: string }>();
+const props = defineProps<{ card: Card, player?: string, selectable?: boolean }>();
 
 const { data } = await useAsyncData("resources", () => queryContent("gamedata", "resources", "cards").find());
 const resources: Resource[] = (data as any)._rawValue;

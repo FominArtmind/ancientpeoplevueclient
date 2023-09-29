@@ -2,8 +2,8 @@
   <div class="draft-area" :style="draftAreaMaxWidthStyle">
     <h1 class="font-larger text-center pb-2 pt-2">Draft</h1>
     <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
-      <CardDevelopment v-for="card in developmentCards" :card="card"/>
-      <CardUnit v-for="card in draft" :card="card" />
+      <CardDevelopment v-for="card in developmentCards" :card="card" :selectable="true" />
+      <CardUnit v-for="card in draft" :card="card" :selectable="true" />
     </div>
   </div>
 </template>

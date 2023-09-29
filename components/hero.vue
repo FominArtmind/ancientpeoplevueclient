@@ -6,7 +6,7 @@
       </div>
       <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
         <div class="adaptive-text-container" v-for="card in village">
-          <CardUnit :card="card.card" :rotated="card.rotated" />
+          <CardUnit :card="card.card" :selectable="true" :rotated="card.rotated" />
           <!--<div class="adaptive-text">{{ card.rotated ? 'Rotated' : '' }}</div> -->
         </div>
         <template v-if="hand.length > 0">
@@ -63,7 +63,7 @@
 }
 
 @keyframes blink { 
-  50% { color: #c4ecf8; } 
+  50% { color: #c4ecf8; transform: translate(2px, 0px); } 
 }
 .action-required {
   animation: blink 1.75s infinite ease;
