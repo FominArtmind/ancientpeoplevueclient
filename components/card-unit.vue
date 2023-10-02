@@ -191,5 +191,4 @@ const resourceBonus = computed((): { type: string, value: number } | undefined =
   }
 });
 
-// console.log(unit.value);
 </script>

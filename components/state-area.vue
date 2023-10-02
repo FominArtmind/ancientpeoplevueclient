@@ -22,16 +22,14 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { Game } from "../types/game";
-
-const props = defineProps<{ game: Game }>();
+import { game } from "../composables/state";
 
 const victory = computed(() => {
-  return props.game.options.find(value => value.name === "victoryCulture")?.value;
+  return game.value.options.find(value => value.name === "victoryCulture")?.value;
 });
 
 const inventions = computed(() => {
-  return props.game.inventions.slice(props.game.state.turn - 1, props.game.state.turn + 2);
+  return game.value.inventions.slice(game.value.state.turn - 1, game.value.state.turn + 2);
 });
 
 </script>

@@ -18,19 +18,24 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { Card, VillageCard } from "../types/game";
+import { game } from "../composables/state";
 // @ts-ignore
 import { DateTime } from "luxon";
 
-const props = defineProps<{ draft: Card[] }>();
+const draft = computed(() => {
+  return game.value.state.draftCards;
+});
 
-const developmentCards = ref<Card[]>([
-  { id: 0, type: 'tools'},
-  { id: 0, type: 'new-lands'},
-  { id: 0, type: 'rock-painting'}
-]);
+const draftDeckSize = computed(() => {
+  return game.value.state.draftDeckSize;
+});
+
+const developmentCards = computed(() => {
+  return game.value.state.developmentCards;
+});
 
 const draftAreaMaxWidthStyle = computed(() => {
-  const columns = props.draft.length + 3;
+  const columns = draft.value.length + 3;
   const effectiveColumns = Math.max(columns, 5);
   const maxWidth = effectiveColumns * 160 + (effectiveColumns + 2) * 4;
   return {
@@ -38,7 +43,7 @@ const draftAreaMaxWidthStyle = computed(() => {
   };
 });
 const gridRowsStyle = computed(() => {
-  const totalCells = props.draft.length + 3;
+  const totalCells = draft.value.length + 3;
   // const rowLengthCells = Math.max(totalCells, 10);
   const rowLengthCells = Math.max(totalCells <= 10 ? totalCells : Math.max(Math.ceil(totalCells / 2), 10), 5);
   return {

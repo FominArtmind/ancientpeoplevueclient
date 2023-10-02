@@ -2,10 +2,10 @@
   <div class="hero-area-container">
     <div class="hero-area" :style="heroAreaMaxWidthStyle">
       <div class="adaptive-text-container">
-        <h1 class="adaptive-text text-center pb-2 pt-2">Village {{ food }}<span class="icon-fix"><Icon name="mdi:food-drumstick"/></span> {{ culture }}<span class="icon-fix"><Icon name="bi:fire"/></span> away {{ awayCardsCount }} deck {{ deckSize }} - {{ timeSpent }}<span class="inline-block pl-2" :class="{ 'action-required': action }">{{ action ? action : 'Wait for other players' }}</span></h1>
+        <h1 class="adaptive-text text-center pb-2 pt-2">Village {{ hero.food }}<span class="icon-fix"><Icon name="mdi:food-drumstick"/></span> {{ hero.culture }}<span class="icon-fix"><Icon name="bi:fire"/></span> away {{ hero.awayCardsCount }} deck {{ hero.deckSize }} - {{ timeSpent }}<span class="inline-block pl-2" :class="{ 'action-required': action }">{{ action ? action : 'Wait for other players' }}</span></h1>
       </div>
       <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
-        <div class="adaptive-text-container" v-for="card in village">
+        <div class="adaptive-text-container" v-for="card in hero.village">
           <CardUnit :card="card.card" :selectable="true" :rotated="card.rotated" />
           <!--<div class="adaptive-text">{{ card.rotated ? 'Rotated' : '' }}</div> -->
         </div>
@@ -72,32 +72,38 @@
 
 <script setup lang="ts">
 import { ref, computed, inject } from "vue";
-import { Card, VillageCard } from "../types/game";
+import { Player } from "../types/game";
+import { nickname, game, hand } from "../composables/state";
 // @ts-ignore
 import { DateTime } from "luxon";
-
-const props = defineProps<{ hand: Card[], deckSize: number, village: VillageCard[], food: number, culture: number, awayCardsCount: number, timeTakenMs: number, action: string }>();
 
 const windowWidth = inject<globalThis.Ref<number>>("windowWidth", ref(0));
 const windowHeight = inject<globalThis.Ref<number>>("windowHeight", ref(0));
 
+const hero = computed(() => {
+  return game.value.state.players.find(value => value.nick === nickname.value) as Player;
+});
+
 const timeSpent = computed(() => {
-  return DateTime.fromMillis(props.timeTakenMs).toFormat("m:ss");
+  return DateTime.fromMillis(hero.value.timeTakenMs).toFormat("m:ss");
+});
+
+const action = computed(() => {
+  return "Play card from hand";
 });
 
 const heroAreaMaxWidthStyle = computed(() => {
-  const columns = props.village.length + props.hand.length;
+  const columns = hero.value.village.length + hand.value.length;
   const effectiveColumns = Math.max(columns, 5);
   const cardMaxSize = 180; // windowWidth.value > 1366 ? 180 : 120;
   const windowAdaptedCardMaxSize = Math.min(cardMaxSize, Math.round((windowHeight.value / 1080) * (windowHeight.value / windowWidth.value * 1920 / 1080) * cardMaxSize));
-  console.log(windowAdaptedCardMaxSize);
   const maxWidth = effectiveColumns * windowAdaptedCardMaxSize + (effectiveColumns + 2) * 4 + 32;
   return {
     "max-width": maxWidth + "px"
   };
 });
 const gridRowsStyle = computed(() => ({
-  "grid-template-columns": Array(props.village.length).fill("1fr").join(" ") + " 2rem " + Array(props.hand.length).fill("1fr").join(" ")
+  "grid-template-columns": Array(hero.value.village.length).fill("1fr").join(" ") + " 2rem " + Array(hand.value.length).fill("1fr").join(" ")
 }));
 
 </script>

@@ -12,7 +12,7 @@ export interface PutAsideResourcesEvent {
 export interface TurnEvent {
   type: "turn"
   turn: number
-  phase: string
+  phase: "living" | "development"
 }
 
 export interface ExtraFoodEvent {
@@ -185,7 +185,7 @@ export interface GeneralEvent {
   cultureLost?: number 
   text?: string
   turn?: number
-  phase?: string
+  phase?: "living" | "development"
   winner?: string
   result?: {[nick: string]: number}
   unknownForPlayer?: boolean

@@ -52,7 +52,7 @@ export interface Player {
 
 export interface GameState {
   turn: number
-  phase: string
+  phase: "living" | "development"
   actor: number
   players: Player[]
   resourcesDeckSize: number

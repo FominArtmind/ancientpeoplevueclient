@@ -26,8 +26,8 @@
 }
 .image-container {
   aspect-ratio: 5/4;
-  margin-bottom: 10%;
-  margin-top: 20%;
+  margin-bottom: 0%;
+  margin-top: 10%;
   width: 100%;
 }
 

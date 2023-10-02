@@ -8,6 +8,7 @@
             {{ player.culture }}<span class="icon-fix"><Icon name="bi:fire"/></span>
             <!-- {{ player.awayCardsCount }}<span class="icon-fix"><Icon name="bi:people"/></span> -->
             {{ player.deckSize }}<span class="icon-fix"><Icon name="bi:files"/></span>
+            - <span class="icon-fix"><Icon name="mdi:axe"/></span> {{ raidChance }}
             <!--  - {{ timeSpent }} -->
           </h1>
         </template>
@@ -19,6 +20,7 @@
             <div>Hand Size: {{ player.handSize }}</div>
             <div>Deck Size: {{ player.deckSize }}</div>
             <div>Away Cards: {{ player.awayCardsCount }}</div>
+            <div>Raid success chance: {{ raidChance }}</div>
             <div>Time spent: {{ timeSpent }}</div>
           </v-card-text>
           <!--<v-card-actions>
@@ -65,15 +67,21 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { Player } from "../types/game";
+import { game } from "../composables/state";
 // @ts-ignore
 import { DateTime } from "luxon";
 
-const props = defineProps<{ player: Player, totalPlayers: number }>();
+const raidChance = ref("97%");
+const props = defineProps<{ player: Player }>();
 
 const dialog = ref(false);
 
 const windowWidth = inject<globalThis.Ref<number>>("windowWidth", ref(0));
 const windowHeight = inject<globalThis.Ref<number>>("windowHeight", ref(0));
+
+const totalPlayers = computed(() => {
+  return game.value.players.length;
+});
 
 const timeSpent = computed(() => {
   return DateTime.fromMillis(props.player.timeTakenMs).toFormat("m:ss");
@@ -91,7 +99,7 @@ const opponentAreaMaxWidthStyle = computed(() => {
 });
 
 const gridRowsStyle = computed(() => {
-  const opponents = props.totalPlayers - 1;
+  const opponents = totalPlayers.value - 1;
   let minRowLength = 14;
   switch(opponents) {
     case 0: minRowLength = 7; break;

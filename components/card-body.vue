@@ -115,6 +115,5 @@
 import { ref } from 'vue'
 
 const props = defineProps<{ selectable: boolean, rotated?: boolean, suggested?: boolean }>();
-const msg = ref('Hello World!');
 const selected = ref(false);
 </script>

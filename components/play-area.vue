@@ -4,34 +4,14 @@
       <li><b>Hunt</b></li>
       <li>Pass</li>
     </ul>
-    <div class="flex">
-      <Opponent :player="opponent1" :totalPlayers="5"/>
-      <Opponent :player="opponent2" :totalPlayers="5"/>
-      <Opponent :player="opponent3" :totalPlayers="5"/>
-      <Opponent :player="opponent4" :totalPlayers="5"/>
+    <div v-if="opponents.length === 0" class="empty-opponents">
     </div>
-    <!-- <div class="flex">
-      <Opponent :player="opponent1" :totalPlayers="3"/>
-      <Opponent :player="opponent2" :totalPlayers="3"/>
-    </div> -->
-    <!-- <div class="flex">
-      <Opponent :player="opponent1" :totalPlayers="2"/>
-    </div> -->
-    <!--<div class="flex">
-      <CardDevelopment v-for="card in developmentCards" :card="card"/>
-    </div> -->
-    <!-- <Resources :resources="resources" :deckSize="resourcesDeckSize" :players="playerResources"></Resources> -->
-    <Draft :draft="draft" />
-    <Hero :hand="hand" :deckSize="deckSize" :village="village" :food="food" :culture="culture" :awayCardsCount="awayCardsCount" :timeTakenMs="timeTakenMs" :action="'Play card from hand'" />
-    <!--<div class="flex">
-      <CardUnit v-for="card in unitCards" :card="card"/>
+    <div v-if="opponents.length > 0" class="flex">
+      <Opponent v-for="opponent in opponents" :player="opponent" />
     </div>
-    <div class="flex">
-      <CardUnit v-for="card in unitCards2" :card="card"/>
-    </div>
-    <div class="flex">
-      <CardUnit v-for="card in unitCards3" :card="card"/>
-    </div> -->
+    <Resources v-if="phase === 'living'" />
+    <Draft v-if="phase === 'development'" />
+    <Hero />
   </div>
 </template>
 
@@ -64,6 +44,9 @@
   color: #FAFAFA;
 }
 
+.empty-opponents {
+  min-height: 120px;
+}
 .village {
   display: inline-block;
   min-height: 240px;
@@ -76,245 +59,30 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { Player, Card, VillageCard, PlayerResources } from "../types/game";
+import { nickname, game } from "../composables/state";
 
 let menu = ref<HTMLUListElement>();
 let viewMenu = ref(false);
 let top = ref("0px");
 let left = ref("0px");
 
-const opponent1 = ref<Player>({
-  nick: "Kuzma",
-  culture: 10,
-  food: 3,
-  village: [
-    { card: { id: 0, type: 'chiropractor' }, rotated: true },
-    { card: { id: 0, type: 'fire-keeper' } },
-    { card: { id: 0, type: 'leader' } },
-    { card: { id: 0, type: 'inhabitant' } },
-    { card: { id: 0, type: 'inhabitant' } },
-    { card: { id: 0, type: 'inhabitant' } }
-  ],
-  deckSize: 1,
-  handSize: 2,
-  awayCardsCount: 0,
-  awayResources: [],
-  state: {
-    playingCard: true,
-    passed: false,
-    leadership: [],
-    unity: "",
-    migrationChoose: [],
-    pathfindingChoose: false,
-    sociality: 0
-  },
-  timeTakenMs: 1000 * 425
-});
-const opponent2 = ref<Player>({
-  nick: "Sergey",
-  culture: 10,
-  food: 3,
-  village: [
-    { card: { id: 0, type: 'chiropractor' }, rotated: true },
-    { card: { id: 0, type: 'caveman' } },
-    { card: { id: 0, type: 'caveman' } },
-    { card: { id: 0, type: 'caveman' } },
-    { card: { id: 0, type: 'caveman' } },
-    { card: { id: 0, type: 'caveman' } },
-    { card: { id: 0, type: 'caveman' } },
-    { card: { id: 0, type: 'leader' } },
-    { card: { id: 0, type: 'inhabitant' } }
-  ],
-  deckSize: 0,
-  handSize: 0,
-  awayCardsCount: 0,
-  awayResources: [],
-  state: {
-    playingCard: true,
-    passed: false,
-    leadership: [],
-    unity: "",
-    migrationChoose: [],
-    pathfindingChoose: false,
-    sociality: 0
-  },
-  timeTakenMs: 1000 * 425
-});
-const opponent3 = ref<Player>({
-  nick: "Alex",
-  culture: 10,
-  food: 3,
-  village: [
-    { card: { id: 0, type: 'chiropractor' }, rotated: true },
-    { card: { id: 0, type: 'fire-keeper' } },
-    { card: { id: 0, type: 'leader' } },
-    { card: { id: 0, type: 'inhabitant' } }
-  ],
-  deckSize: 1,
-  handSize: 2,
-  awayCardsCount: 0,
-  awayResources: [],
-  state: {
-    playingCard: true,
-    passed: false,
-    leadership: [],
-    unity: "",
-    migrationChoose: [],
-    pathfindingChoose: false,
-    sociality: 0
-  },
-  timeTakenMs: 1000 * 425
-});
-const opponent4 = ref<Player>({
-  nick: "Alcho",
-  culture: 10,
-  food: 3,
-  village: [
-    { card: { id: 0, type: 'chiropractor' }, rotated: true },
-    { card: { id: 0, type: 'fire-keeper' } },
-    { card: { id: 0, type: 'leader' } },
-    { card: { id: 0, type: 'inhabitant' } }
-  ],
-  deckSize: 1,
-  handSize: 2,
-  awayCardsCount: 0,
-  awayResources: [],
-  state: {
-    playingCard: true,
-    passed: false,
-    leadership: [],
-    unity: "",
-    migrationChoose: [],
-    pathfindingChoose: false,
-    sociality: 0
-  },
-  timeTakenMs: 1000 * 425
+const phase = computed(() => {
+  return game.value.state.phase;
 });
 
-const developmentCards = ref<Card[]>([
-  { id: 0, type: 'tools'},
-  { id: 0, type: 'new-lands'},
-  { id: 0, type: 'rock-painting'}
-]);
-const draft = ref<Card[]>([
-  { id: 0, type: 'mentor'},
-  { id: 0, type: 'cannibal'},
-  { id: 0, type: 'patrol'},
-  { id: 0, type: 'chiropractor'},
-  { id: 0, type: 'handyman'},
-  { id: 0, type: 'bear-son'},
-  { id: 0, type: 'chieftain'},
-  { id: 0, type: 'watchdog'},
-  { id: 0, type: 'engraver'},
-  { id: 0, type: 'pathfinder'},
-  { id: 0, type: 'warrior'},
-  { id: 0, type: 'amazon'},
-  { id: 0, type: 'ancient'},
-  { id: 0, type: 'settler'},
-  { id: 0, type: 'wet-nurse'},
-  { id: 0, type: 'beater'},
-  { id: 0, type: 'shaman'},
-  { id: 0, type: 'hunter'}
-]);
-const resources = ref<Card[]>([
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'deer'},
-  { id: 0, type: 'aurochs'},
-  { id: 0, type: 'mammoth'}
-]);
-const resourcesDeckSize = ref(12);
-const playerResources = ref<PlayerResources[]>([
-  {
-    nick: "Kuzma",
-    resources: [
-      { id: 0, type: 'deer'},
-      { id: 0, type: 'deer'}
-    ]
-  },
-  {
-    nick: "Arseniy",
-    resources: [
-      { id: 0, type: 'aurochs'}
-    ]
-  },
-]);
+const opponents = computed(() => {
+  const playersN = game.value.players.length;
+  if(playersN < 2) {
+    return [];
+  }
+  const heroIndex = game.value.state.players.findIndex(value => value.nick === nickname.value);
 
-const hand = ref<Card[]>([
-  { id: 0, type: 'fire-keeper'},
-  { id: 0, type: 'inhabitant'}
-]);
-const deckSize = ref(2);
-
-const village = ref<VillageCard[]>([
-  { card: { id: 0, type: 'chiropractor' }, rotated: true },
-  { card: { id: 0, type: 'fire-keeper' } },
-  { card: { id: 0, type: 'leader' } },
-  { card: { id: 0, type: 'inhabitant' } }
-]);
-const food = ref(12);
-const culture = ref(7);
-const awayCardsCount = ref(0);
-const timeTakenMs = ref(1000 * 445);
-
-const resourceCards = ref<Card[]>([
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'deer'},
-  { id: 0, type: 'aurochs'},
-  { id: 0, type: 'mammoth'}
-]);
-const resourceCards2 = ref<Card[]>([
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'deer'},
-  { id: 0, type: 'aurochs'},
-  { id: 0, type: 'mammoth'},
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'fish'},
-  { id: 0, type: 'deer'},
-  { id: 0, type: 'aurochs'},
-  { id: 0, type: 'mammoth'}
-]);
-const unitCards = ref<Card[]>([
-  { id: 0, type: 'inhabitant'},
-  { id: 0, type: 'fire-keeper'},
-  { id: 0, type: 'leader'},
-  { id: 0, type: 'collector'},
-  { id: 0, type: 'fisher'},
-  { id: 0, type: 'agile'},
-  { id: 0, type: 'caveman'}
-]);
-const unitCards2 = ref<Card[]>([
-  { id: 0, type: 'mentor'},
-  { id: 0, type: 'cannibal'},
-  { id: 0, type: 'patrol'},
-  { id: 0, type: 'chiropractor'},
-  { id: 0, type: 'handyman'},
-  { id: 0, type: 'bear-son'},
-  { id: 0, type: 'chieftain'}
-]);
-const unitCards3 = ref<Card[]>([
-  { id: 0, type: 'watchdog'},
-  { id: 0, type: 'engraver'},
-  { id: 0, type: 'pathfinder'},
-  { id: 0, type: 'warrior'},
-  { id: 0, type: 'amazon'},
-  { id: 0, type: 'ancient'},
-  { id: 0, type: 'settler'},
-  { id: 0, type: 'wet-nurse'},
-  { id: 0, type: 'beater'},
-  { id: 0, type: 'shaman'},
-  { id: 0, type: 'hunter'}
-]);
+  const opps = [];
+  for(let n = 0; n < playersN - 1; n++) {
+    opps.push(game.value.state.players[(heroIndex + 1 + n) % playersN]);
+  }
+  return opps;
+});
 
 const positionStyle = computed(() => ({
   top: top.value,
