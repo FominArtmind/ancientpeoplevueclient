@@ -114,15 +114,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { Card } from "../types/game";
-import { Unit, UnitProperties } from "../types/unit";
+import { UnitProperties } from "../types/unit";
+import { unitCard } from "../composables/content";
 import { capitalize } from "../utils/capitalize";
 
 const props = defineProps<{ card: Card, selectable?: boolean, suggested?: boolean, rotated?: boolean }>();
 
-const { data } = await useAsyncData("units", () => queryContent("gamedata", "units", "cards").find());
-const units: Unit[] = (data as any)._rawValue;
-
-const unit = ref(units.find(value => value.title.toLowerCase().replaceAll(" ", "-") === props.card.type));
+const unit = ref(await unitCard(props.card.type));
 
 const uprops = computed((): UnitProperties => {
   return unit.value?.properties || {};

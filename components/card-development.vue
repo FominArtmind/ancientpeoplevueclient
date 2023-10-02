@@ -41,12 +41,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { Card } from "../types/game";
-import { Development } from "../types/development";
+import { developmentCard } from "../composables/content";
 
 const props = defineProps<{ card: Card }>();
 
-const { data } = await useAsyncData("actions", () => queryContent("gamedata", "actions", "cards").find());
-const developments: Development[] = (data as any)._rawValue;
-
-const development = ref(developments.find(value => value.title.toLowerCase().replaceAll(" ", "-") === props.card.type));
+const development = ref(await developmentCard(props.card.type));
 </script>
