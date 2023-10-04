@@ -1,5 +1,5 @@
 <template>
-  <div data-te-toggle="tooltip" v-bind:title="type" class="bg-contain bg-no-repeat text-center w-12 h-8 inline-block" :style="{ 'background-image': 'url(/gamedata/' + (resource ? 'resources' : 'units') + '/views/' + type + '-icon-white.png)' }">
+  <div data-te-toggle="tooltip" v-bind:title="type" class="bg-contain bg-no-repeat text-center w-12 h-8 inline-block" :style="{ 'background-image': 'url(/gamedata/' + (kind === 'resource' ? 'resources' : (kind === 'development' ? 'actions' : 'units')) + '/views/' + type + '-icon-white.png)' }">
   </div>
 </template>
 
@@ -18,5 +18,5 @@ onMounted(() => {
   initTE({ Tooltip });
 });
 
-const props = defineProps<{ type?: string, resource?: boolean }>();
+const props = defineProps<{ type?: string, kind?: "unit" | "resource" | "development" }>();
 </script>

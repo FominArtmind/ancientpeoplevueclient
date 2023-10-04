@@ -1,8 +1,40 @@
 <template>
   <div class="min-h-screen border-l-2 border-white flex justify-between flex-col" @contextmenu="openMenu">
-    <ul id="right-click-menu" tabindex="-1" ref="menu" v-if="viewMenu" class="focus:outline-none cursor-pointer" :style="positionStyle" @blur="closeMenu">
-      <li><b>Hunt</b></li>
-      <li>Pass</li>
+    <ul id="right-click-menu" tabindex="-1" ref="menu" v-if="viewMenu" class="focus:outline-none" :style="positionStyle" @blur="closeMenu">
+      <template v-for="action of menuActions">
+        <li v-if="action.type === 'hint'">
+          <i>{{ action.hint }}</i>
+        </li>
+        <li v-else-if="action.type === 'done'" class="menu-action">
+          Done selection
+        </li>
+        <li v-else-if="action.type === 'hunt'" class="menu-action">
+          Hunt
+        </li>
+        <li v-else-if="action.type === 'raid'" class="menu-action">
+          Raid {{ action.aimPlayer }}
+        </li>
+        <li v-else-if="action.type === 'buy'" class="menu-action">
+          <ChatValue :value="'Buy'" />
+          <ArtIcon :type="action.aim ? action.aim[0].type : ''" />
+        </li>
+        <li v-else-if="action.type === 'upgrade'" class="menu-action">
+          <ChatValue :value="'Upgrade'" />
+          <ArtIcon :type="action.source ? action.source[0].type : ''" />
+          <ChatValue :value="'to'" />
+          <ArtIcon :type="action.aim ? action.aim[0].type : ''" />
+        </li>
+        <li v-else-if="action.type === 'develop'" class="menu-action">
+          <ChatValue :value="'Develop to'" />
+          <ArtIcon :type="action.aim ? action.aim[0].type : ''" :kind="'development'" />
+        </li>
+        <li v-else-if="action.type === 'pass'" class="menu-action">
+          Pass
+        </li>
+        <li v-else>
+          NOT SUPPORTED ACTION
+        </li>
+      </template>
     </ul>
     <div v-if="opponents.length === 0" class="empty-opponents">
     </div>
@@ -25,7 +57,7 @@
   margin: 0;
   padding: 0;
   position: absolute;
-  width: 250px;
+  width: 350px;
   z-index: 999999;
 }
 
@@ -33,13 +65,20 @@
   border-bottom: 1px solid #E0E0E0;
   margin: 0;
   padding: 5px 35px;
+  align-items: center;
 }
 
 #right-click-menu li:last-child {
   border-bottom: none;
 }
 
-#right-click-menu li:hover {
+#right-click-menu .menu-action {
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+#right-click-menu .menu-action:hover {
   background: #1E88E5;
   color: #FAFAFA;
 }
@@ -60,13 +99,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { Card, VillageCard, Player } from "../types/game";
+import { MenuAction } from "../types/menu-action";
 import { nickname, game, selection } from "../composables/state";
 import { clone } from "../utils/clone";
 
-let menu = ref<HTMLUListElement>();
-let viewMenu = ref(false);
-let top = ref("0px");
-let left = ref("0px");
+const menu = ref<HTMLUListElement>();
+const viewMenu = ref(false);
+const top = ref("0px");
+const left = ref("0px");
 
 const phase = computed(() => {
   return game.value.state.phase;
@@ -179,14 +219,19 @@ function processHeroCardClicked(card: Card | VillageCard, location: "village" | 
 }
 
 function processResourceCardClicked(card: Card, player?: string) {
-  if(heroTurn.value && !hero.value.state.pathfindingChoose && !hero.value.state.sociality) {
-    if(!player || player === nickname.value) {
-      const index = selection.value.resources.findIndex(value => value.id === card.id);
-      if(index === -1) {
-        selection.value.resources.push(clone(card));
-      }
-      else {
-        selection.value.resources.splice(index, 1);
+  if(heroTurn.value) {
+    if(hero.value.state.pathfindingChoose) {
+      // TO DO perform action on the resource
+    }
+    else if(!hero.value.state.sociality) {
+      if(!player || player === nickname.value) {
+        const index = selection.value.resources.findIndex(value => value.id === card.id);
+        if(index === -1) {
+          selection.value.resources.push(clone(card));
+        }
+        else {
+          selection.value.resources.splice(index, 1);
+        }
       }
     }
   }
@@ -214,6 +259,144 @@ function processDraftCardClicked(card: Card, development: boolean) {
     }
   }
 }
+
+const menuActions: ComputedRef<MenuAction[]> = computed(() => {
+  if(!heroTurn.value) {
+    return [{
+      type: "hint",
+      hint: "Wait for other players"
+    }];
+  }
+  if(phase.value === "living") {
+    if(hero.value.state.sociality) {
+      if(selection.value.hand.length === hero.value.state.sociality) {
+        return [{
+          type: "done",
+          source: clone(selection.value.hand) as Card[]
+        }]
+      }
+      return [{
+        type: "hint",
+        hint: `Select ${hero.value.state.sociality} sociality cards to return to the deck` 
+      }];
+    }
+    if(hero.value.state.pathfindingChoose) {
+      return [{
+        type: "hint",
+        hint: `Press on any resource card to add to your resources (Pathfinding)` 
+      }];
+    }
+    if(hero.value.state.playingCard) {
+      return [{
+        type: "hint",
+        hint: `Press on any hand card to play it (put to your site)` 
+      }];
+    }
+    else {
+      if(!selection.value.village) {
+        return [
+          {
+            type: "hint",
+            hint: "Select site cards to perform hunt or raid, pass if no action required"
+          },
+          {
+            type: "pass"
+          }
+        ];
+      }
+
+      const actions: MenuAction[] = [];
+      if(selection.value.resources) {
+        actions.push({
+          type: "hunt",
+          source: selection.value.village.map(value => value.card),
+          aim: selection.value.resources
+        });
+      }
+
+      if(opponents.value.length > 0) {
+        if(selection.value.village.find(value => value.rotated)) {
+          actions.push({
+            type: "hint",
+            hint: "Rotated cards can't raid"
+          })
+        }
+        else {
+          for(const opp of opponents.value) {
+            actions.push({
+              type: "raid",
+              source: selection.value.village.map(value => value.card),
+              aim: opp.village.filter(value => !value.rotated).map(value => value.card),
+              aimPlayer: opp.nick
+            });
+          }
+        }
+      }
+
+      actions.push({
+        type: "pass"
+      });
+
+      return actions;
+    }
+  }
+  else {
+    if(!selection.value.draft && !selection.value.development) {
+      return [
+        {
+          type: "hint",
+          hint: "Select development or draft card to buy or upgrade to, pass if no action required"
+        },
+        {
+          type: "pass"
+        }
+      ];
+    }
+
+    if(selection.value.development) {
+      return [
+        {
+          type: "develop",
+          aim: [clone(selection.value.development)] as Card[]
+        },
+        {
+          type: "pass"
+        }
+      ];
+    }
+
+    if(!selection.value.village.length) {
+      return [
+        {
+          type: "buy",
+          aim: [clone(selection.value.draft)] as Card[]
+        },
+        {
+          type: "hint",
+          hint: "Select site card if you want to upgrade instead"
+        },
+        {
+          type: "pass"
+        }
+      ];
+    }
+
+    return [
+      {
+        type: "hint",
+        hint: "Unselect site card if you want to buy instead"
+      },
+      {
+        type: "upgrade",
+        source: selection.value.village.map(value => value.card),
+        aim: [clone(selection.value.draft)] as Card[]
+      },
+      {
+        type: "pass"
+      }
+    ];
+  }
+});
 
 function play() {
 

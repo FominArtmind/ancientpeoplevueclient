@@ -4,9 +4,9 @@
       <template v-if="event.type === 'hunt'">
         <!-- <ChatValue :value="event.actor" /> -->
         <div class="mx-2"></div>
-        <ArtIcon v-for="unit in event.hunters" :type="unit" :resource="false" />
+        <ArtIcon v-for="unit in event.hunters" :type="unit" />
         <ChatValue :value="event.resource === 'fish' ? 'fishes' : 'hunts'" />
-        <ArtIcon v-for="n in event.number" :type="event.resource" :resource="true" />
+        <ArtIcon v-for="n in event.number" :type="event.resource" :kind="'resource'" />
         <Icon name="bi:arrow-right"/>
         <template v-if="event.food && event.food !== 0">
           <ChatValue :value="event.food" />
@@ -20,10 +20,10 @@
       <template v-else-if="event.type === 'raid'">
         <!-- <ChatValue :value="event.actor" /> -->
         <div class="mx-2"></div>
-        <ArtIcon v-for="unit in event.raiders" :type="unit.type" :resource="false" />
+        <ArtIcon v-for="unit in event.raiders" :type="unit.type" />
         <ChatValue :value="'raids'" />
         <ChatValue :value="event.aim" />
-        <ArtIcon v-for="unit in event.victims" :type="unit.type" :resource="false" />
+        <ArtIcon v-for="unit in event.victims" :type="unit.type" />
         <ChatValue :value="`(${event.chances?.winRate}%)`"/>
         <Icon name="bi:arrow-right"/>
         <ChatValue :value="event.success ? 'SUCCESS' : 'FAILURE'" />
@@ -39,7 +39,7 @@
       <template v-else-if="event.type === 'card'">
         <ChatValue :value="event.actor" />
         <ChatValue :value="'plays'" />
-        <ArtIcon :type="event.unit" :resource="false" />
+        <ArtIcon :type="event.unit" />
       </template>
       <template v-else-if="event.type === 'pass'">
         <ChatValue :value="event.actor" />
@@ -53,7 +53,7 @@
         <ChatValue :value="'due to time penalty'" />
       </template>
       <template v-else-if="event.type === 'putAsideResources'">
-        <ArtIcon v-for="resource in event.resources" :type="resource" :resource="true" />
+        <ArtIcon v-for="resource in event.resources" :type="resource" :kind="'resource'" />
         <ChatValue :value="'discarded'" />
       </template>
       <template v-else-if="event.type === 'turn'">
@@ -67,13 +67,13 @@
       <template v-else-if="event.type === 'extraFood'">
         <ChatValue :value="'Draft culture level'" />
         <ChatValue :value="event.maxCulture" />
-        <ArtIcon v-for="unit in event.discard" :type="unit" :resource="false" />
+        <ArtIcon v-for="unit in event.discard" :type="unit" />
         <ChatValue :value="'discarded as not meeting the requirements'" />
       </template>
       <template v-else-if="event.type === 'develop'">
         <ChatValue :value="event.actor" />
         <ChatValue :value="'develops'" />
-        <ChatValue class="font-semibold" :value="event.card" />
+        <ArtIcon :type="event.card" :kind="'development'" />
       </template>
       <template v-else-if="event.type === 'end'">
         <div class="font-semibold">
@@ -90,20 +90,20 @@
       <template v-else-if="event.type === 'buy'">
         <ChatValue :value="event.actor" />
         <ChatValue :value="'buys'" />
-        <ArtIcon :type="event.unit" :resource="false" />
+        <ArtIcon :type="event.unit" />
       </template>
       <template v-else-if="event.type === 'upgrade'">
         <ChatValue :value="event.actor" />
         <ChatValue :value="'upgrades'" />
-        <ArtIcon :type="event.from" :resource="false" />
+        <ArtIcon :type="event.from" />
         <Icon name="bi:arrow-right"/>
-        <ArtIcon :type="event.unit" :resource="false" />
+        <ArtIcon :type="event.unit" />
       </template>
       <template v-else-if="event.type === 'pathfindingChoice'">
         <!-- <ChatValue :value="event.actor" /> -->
         <div class="mx-2"></div>
         <ChatValue :value="'adds'" />
-        <ArtIcon :type="event.resource" :resource="true" />
+        <ArtIcon :type="event.resource" :kind="'resource'" />
         <template v-if="event.from">
           <ChatValue :value="'from'" />
           <ChatValue :value="event.from" />
@@ -128,10 +128,10 @@
         <!-- <ChatValue :value="event.actor" /> -->
         <div class="mx-2"></div>
         <ChatValue :value="'opens'" />
-        <ArtIcon v-for="resource in event.resources" :type="resource" :resource="true" />
+        <ArtIcon v-for="resource in event.resources" :type="resource" :kind="'resource'" />
         <template v-if="event.resources?.includes(event.resourceType as string)">
           <ChatValue :value="'and adds all'" />
-          <ArtIcon :type="event.resourceType" :resource="true" />
+          <ArtIcon :type="event.resourceType" :kind="'resource'" />
           <ChatValue :value="'to own resources'" />
         </template>
       </template>
@@ -139,14 +139,14 @@
         <!-- <ChatValue :value="event.actor" /> -->
         <div class="mx-2"></div>
         <ChatValue :value="'adds'" />
-        <ArtIcon v-for="resource in event.resources" :type="resource" :resource="true" />
+        <ArtIcon v-for="resource in event.resources" :type="resource" :kind="'resource'" />
         <ChatValue :value="'to own resources'" />
       </template>
       <template v-else-if="event.type === 'community'">
         <!-- <ChatValue :value="event.actor" /> -->
         <div class="mx-2"></div>
         <ChatValue :value="'adds'" />
-        <ArtIcon v-for="n in event.number" :type="event.unit" :resource="false" />
+        <ArtIcon v-for="n in event.number" :type="event.unit" />
         <ChatValue :value="'to their hand'" />
       </template>
       <template v-else-if="event.type === 'chat'">
