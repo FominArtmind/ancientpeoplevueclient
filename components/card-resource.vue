@@ -1,5 +1,5 @@
 <template>
-  <CardBody :selectable="selectable" >
+  <CardBody :selected="selected">
     <h3 v-if="player" class="player-nick">{{ player }}</h3>
     <div class="w-full image-container bg-contain bg-no-repeat" data-te-toggle="tooltip" v-bind:title="resource?.title" :style="{ 'background-image': 'url(/gamedata/resources/views/' + card.type + '-white.png)' }"></div>
     <div class="font-larger line-height-fix">
@@ -45,7 +45,12 @@ import { ref } from "vue";
 import { Card } from "../types/game";
 import { resourceCard } from "../composables/content";
 
-const props = defineProps<{ card: Card, player?: string, selectable?: boolean }>();
+const props = defineProps<{ card: Card, player?: string }>();
 
 const resource = ref(await resourceCard(props.card.type));
+
+const selected = computed(() => {
+  return selection.value.resources.some(value => value.id === props.card.id);
+});
+
 </script>

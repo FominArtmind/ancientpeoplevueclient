@@ -6,7 +6,7 @@
       </div>
       <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
         <div class="adaptive-text-container" v-for="card in hero.village">
-          <CardUnit :card="card.card" :selectable="true" :rotated="card.rotated" />
+          <CardUnit :card="card.card" :location="'village'" :rotated="card.rotated" @click="$emit('cardClicked', card, 'village')" />
           <!--<div class="adaptive-text">{{ card.rotated ? 'Rotated' : '' }}</div> -->
         </div>
         <template v-if="hand.length > 0">
@@ -14,7 +14,7 @@
             <div class="hand-arrow"><Icon name="mdi:arrow-left-bold-outline"/></div>
           </div>
           <div class="adaptive-text-container" v-for="card in hand">
-            <CardUnit :card="card" :suggested="true" />
+            <CardUnit :card="card" :location="'hand'" :suggested="true" @click="$emit('cardClicked', card, 'hand')" />
             <!--<div class="adaptive-text">Hand</div> -->
           </div>
         </template>
@@ -72,10 +72,14 @@
 
 <script setup lang="ts">
 import { ref, computed, inject } from "vue";
-import { Player } from "../types/game";
-import { nickname, game, hand } from "../composables/state";
+import { Player, Card, VillageCard } from "../types/game";
+import { nickname, game, hand, selection } from "../composables/state";
 // @ts-ignore
 import { DateTime } from "luxon";
+
+const emit = defineEmits<{
+  cardClicked: [card: Card | VillageCard, location: string]
+}>();
 
 const windowWidth = inject<globalThis.Ref<number>>("windowWidth", ref(0));
 const windowHeight = inject<globalThis.Ref<number>>("windowHeight", ref(0));
@@ -105,5 +109,9 @@ const heroAreaMaxWidthStyle = computed(() => {
 const gridRowsStyle = computed(() => ({
   "grid-template-columns": Array(hero.value.village.length).fill("1fr").join(" ") + " 2rem " + Array(hand.value.length).fill("1fr").join(" ")
 }));
+
+// function onClicked(card: Card | VillageCard, location: "village" | "hand") {
+//   emit("cardClicked", card, location);
+// }
 
 </script>

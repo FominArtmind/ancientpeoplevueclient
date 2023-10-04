@@ -2,8 +2,8 @@
   <div class="draft-area" :style="draftAreaMaxWidthStyle">
     <h1 class="font-larger text-center pb-2 pt-2">Draft</h1>
     <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
-      <CardDevelopment v-for="card in developmentCards" :card="card" :selectable="true" />
-      <CardUnit v-for="card in draft" :card="card" :selectable="true" />
+      <CardDevelopment v-for="card in developmentCards" :card="card" @click="$emit('cardClicked', card, true)" />
+      <CardUnit v-for="card in draft" :card="card" :location="'draft'" @click="$emit('cardClicked', card, false)" />
     </div>
   </div>
 </template>
@@ -21,6 +21,12 @@ import { Card, VillageCard } from "../types/game";
 import { game } from "../composables/state";
 // @ts-ignore
 import { DateTime } from "luxon";
+import { ProseP } from "#build/components";
+import { propsToAttrMap } from "@vue/shared";
+
+const emit = defineEmits<{
+  cardClicked: [card: Card, development: boolean]
+}>();
 
 const draft = computed(() => {
   return game.value.state.draftCards;

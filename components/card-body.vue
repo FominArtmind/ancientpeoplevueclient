@@ -6,7 +6,7 @@
       @click="selected = !selected"
     >-->
     <div class="w-full h-full card-background">
-      <div class="w-full h-full p-1 card text-center" :class="{ 'card-suggested': suggested, 'card-selected': selectable && selected }" @click="selectable ? selected = !selected : undefined">
+      <div class="w-full h-full p-1 card text-center" :class="{ 'card-suggested': suggested, 'card-selected': selected }">
         <slot />
       </div>
     </div>
@@ -112,8 +112,14 @@
 </style>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+const props = defineProps<{ selected?: boolean, rotated?: boolean, suggested?: boolean }>();
+const emit = defineEmits<{
+  clicked: []
+}>();
 
-const props = defineProps<{ selectable: boolean, rotated?: boolean, suggested?: boolean }>();
-const selected = ref(false);
+function onClicked() {
+  console.log("Clicked");
+  emit('clicked');
+}
+
 </script>

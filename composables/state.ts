@@ -1,7 +1,7 @@
 import { ref } from "vue";
 
 import { GeneralEvent } from "../types/events";
-import { Card, Game } from "../types/game";
+import { Card, VillageCard, Game } from "../types/game";
 
 export interface GameState {
   game: Game
@@ -12,9 +12,9 @@ export interface GameState {
 export interface SelectionState {
   resources: Card[]
   hand: Card[]
-  village: Card[]
-  draft: Card[]
-  development: Card
+  village: VillageCard[]
+  draft?: Card
+  development?: Card
 }
 
 export const gameId = ref<string>("id111");
@@ -117,7 +117,7 @@ export const game = ref<Game>({
         awayResources: [
         ],
         state: {
-          playingCard: true,
+          playingCard: false,
           passed: true,
           leadership: [],
           unity: "",
@@ -162,24 +162,24 @@ export const game = ref<Game>({
     ],
     draftDeckSize: 75,
     draftCards: [
-      { id: 0, type: 'mentor'},
-      { id: 0, type: 'cannibal'},
-      { id: 0, type: 'patrol'},
-      { id: 0, type: 'chiropractor'},
-      { id: 0, type: 'handyman'},
-      { id: 0, type: 'bear-son'},
-      { id: 0, type: 'chieftain'},
-      { id: 0, type: 'watchdog'},
-      { id: 0, type: 'engraver'},
-      { id: 0, type: 'pathfinder'},
-      { id: 0, type: 'warrior'},
-      { id: 0, type: 'amazon'},
-      { id: 0, type: 'ancient'},
-      { id: 0, type: 'settler'},
-      { id: 0, type: 'wet-nurse'},
-      { id: 0, type: 'beater'},
-      { id: 0, type: 'shaman'},
-      { id: 0, type: 'hunter'}
+      { id: 100, type: 'mentor'},
+      { id: 101, type: 'cannibal'},
+      { id: 102, type: 'patrol'},
+      { id: 103, type: 'chiropractor'},
+      { id: 104, type: 'handyman'},
+      { id: 105, type: 'bear-son'},
+      { id: 106, type: 'chieftain'},
+      { id: 107, type: 'watchdog'},
+      { id: 108, type: 'engraver'},
+      { id: 109, type: 'pathfinder'},
+      { id: 110, type: 'warrior'},
+      { id: 111, type: 'amazon'},
+      { id: 112, type: 'ancient'},
+      { id: 113, type: 'settler'},
+      { id: 114, type: 'wet-nurse'},
+      { id: 115, type: 'beater'},
+      { id: 116, type: 'shaman'},
+      { id: 117, type: 'hunter'}
     ],
     extraFood: 0
     // raidAwaiting?: Action
@@ -194,8 +194,8 @@ export const game = ref<Game>({
 });
 
 export const hand = ref<Card[]>([
-  { id: 0, type: 'fire-keeper'},
-  { id: 0, type: 'inhabitant'}
+  { id: 118, type: 'fire-keeper'},
+  { id: 119, type: 'inhabitant'}
 ]);
 
 export const events = ref<GeneralEvent[]>([
@@ -428,6 +428,11 @@ export const events = ref<GeneralEvent[]>([
   }
 ]);
 
+export const selection = ref<SelectionState>({
+  resources: [],
+  hand: [],
+  village: []
+});
 
 // const opponent1 = ref<Player>({
 //   nick: "Kuzma",

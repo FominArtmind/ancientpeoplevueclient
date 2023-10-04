@@ -3,12 +3,12 @@
     <h1 class="font-larger text-center pb-2 pt-2">Resources (deck size: {{ deckSize }})</h1>
     <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
       <div class="adaptive-text-container" v-for="card in resources">
-        <CardResource :card="card" />
+        <CardResource :card="card" @click="$emit('cardClicked', card)" />
       </div>
       <div></div>
       <template v-for="player in players">
         <div class="adaptive-text-container" v-for="card in player.resources">
-          <CardResource :card="card" :player="player.nick" />
+          <CardResource :card="card" :player="player.nick" @click="$emit('cardClicked', card, player.nick)" />
         </div>
       </template>
     </div>
@@ -25,6 +25,10 @@
 <script setup lang="ts">
 import { Card } from "../types/game";
 import { game } from "../composables/state";
+
+const emit = defineEmits<{
+  cardClicked: [card: Card, player?: string]
+}>();
 
 const resources = computed(() => {
   return game.value.state.openedResources;

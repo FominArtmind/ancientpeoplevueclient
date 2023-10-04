@@ -1,5 +1,5 @@
 <template>
-  <CardBody :selectable="selectable" :suggested="suggested" :rotated="rotated">
+  <CardBody :selected="selected" :suggested="suggested" :rotated="rotated">
     <div class="">
       <Info class="unit-cost" :tooltip="`${unit?.title} costs ${unit?.foodCost} food on draft`">
         <div class="food-cost">{{unit?.foodCost}}</div>
@@ -118,7 +118,7 @@ import { UnitProperties } from "../types/unit";
 import { unitCard } from "../composables/content";
 import { capitalize } from "../utils/capitalize";
 
-const props = defineProps<{ card: Card, selectable?: boolean, suggested?: boolean, rotated?: boolean }>();
+const props = defineProps<{ card: Card, location?: "village" | "hand" | "draft", suggested?: boolean, rotated?: boolean }>();
 
 const unit = ref(await unitCard(props.card.type));
 
@@ -187,6 +187,23 @@ const resourceBonus = computed((): { type: string, value: number } | undefined =
       }
     }
   }
+});
+
+const selected = computed(() => {
+  if(props.location === "village") {
+    console.log("village selection", props.card.id, selection.value.village.some(value => value.card.id === props.card.id))
+    return selection.value.village.some(value => value.card.id === props.card.id);
+  }
+  else if(props.location === "hand") {
+    console.log("hand selection", props.card.id, selection.value.hand.some(value => value.id === props.card.id))
+    return selection.value.hand.some(value => value.id === props.card.id);
+  }
+  else if(props.location === "draft") {
+    console.log("draft selection", selection.value.draft?.id === props.card.id)
+    return selection.value.draft?.id === props.card.id;
+  }
+  console.log("no selection");
+  return false;
 });
 
 </script>
