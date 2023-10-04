@@ -2,8 +2,8 @@
   <div class="draft-area" :style="draftAreaMaxWidthStyle">
     <h1 class="font-larger text-center pb-2 pt-2">Draft</h1>
     <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
-      <CardDevelopment v-for="card in developmentCards" :card="card" @click="$emit('cardClicked', card, true)" />
-      <CardUnit v-for="card in draft" :card="card" :location="'draft'" @click="$emit('cardClicked', card, false)" />
+      <CardDevelopment v-for="card in developmentCards" :card="card" @click="$emit('cardClicked', card, true)" @contextmenu="$emit('cardRightClicked', card, true)" />
+      <CardUnit v-for="card in draft" :card="card" :location="'draft'" @click="$emit('cardClicked', card, false)" @contextmenu="$emit('cardRightClicked', card, false)" />
     </div>
   </div>
 </template>
@@ -26,6 +26,7 @@ import { propsToAttrMap } from "@vue/shared";
 
 const emit = defineEmits<{
   cardClicked: [card: Card, development: boolean]
+  cardRightClicked: [card: Card, development: boolean]
 }>();
 
 const draft = computed(() => {

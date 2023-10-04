@@ -42,8 +42,8 @@
       <Opponent v-for="opponent in opponents" :player="opponent" />
     </div>
     <Resources v-if="phase === 'living'" @cardClicked="processResourceCardClicked" />
-    <Draft v-if="phase === 'development'" @cardClicked="processDraftCardClicked" />
-    <Hero @cardClicked="processHeroCardClicked" />
+    <Draft v-if="phase === 'development'" @cardClicked="processDraftCardClicked" @cardRightClicked="processDraftCardRightClicked" />
+    <Hero @cardClicked="processHeroCardClicked" @cardRightClicked="processHeroCardRightClicked" />
   </div>
 </template>
 
@@ -218,6 +218,19 @@ function processHeroCardClicked(card: Card | VillageCard, location: "village" | 
   }
 }
 
+function processHeroCardRightClicked(card: Card | VillageCard, location: "village" | "hand") {
+  if(heroTurn.value && !hero.value.state.pathfindingChoose) {
+    if(!hero.value.state.sociality) {
+      if(location === "village") {
+        const vcard = card as VillageCard;
+        if(phase.value === "development") {
+          selection.value.village = [clone(vcard)];
+        }
+      }
+    }
+  }
+}
+
 function processResourceCardClicked(card: Card, player?: string) {
   if(heroTurn.value) {
     if(hero.value.state.pathfindingChoose) {
@@ -256,6 +269,19 @@ function processDraftCardClicked(card: Card, development: boolean) {
       else {
         selection.value.draft = clone(card);
       }
+    }
+  }
+}
+
+function processDraftCardRightClicked(card: Card, development: boolean) {
+  if(heroTurn.value) {
+    if(development) {
+      selection.value.draft = undefined;
+      selection.value.development = clone(card);
+    }
+    else {
+      selection.value.development = undefined;
+      selection.value.draft = clone(card);
     }
   }
 }

@@ -6,7 +6,7 @@
       </div>
       <div class="card-grid w-[calc(100% - 4px)]" :style="gridRowsStyle">
         <div class="adaptive-text-container" v-for="card in hero.village">
-          <CardUnit :card="card.card" :location="'village'" :rotated="card.rotated" @click="$emit('cardClicked', card, 'village')" />
+          <CardUnit :card="card.card" :location="'village'" :rotated="card.rotated" @click="$emit('cardClicked', card, 'village')" @contextmenu="$emit('cardRightClicked', card, 'village')" />
           <!--<div class="adaptive-text">{{ card.rotated ? 'Rotated' : '' }}</div> -->
         </div>
         <template v-if="hand.length > 0">
@@ -79,6 +79,7 @@ import { DateTime } from "luxon";
 
 const emit = defineEmits<{
   cardClicked: [card: Card | VillageCard, location: string]
+  cardRightClicked: [card: Card | VillageCard, location: string]
 }>();
 
 const windowWidth = inject<globalThis.Ref<number>>("windowWidth", ref(0));
