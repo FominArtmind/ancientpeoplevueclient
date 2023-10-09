@@ -9,7 +9,7 @@
         {{unit?.cultureLevel}}<span class="icon-fix"><Icon name="bi:fire"/></span>
       </Info>
     </div>
-    <div class="w-full image-container bg-contain bg-no-repeat" :style="{ 'background-image': 'url(/gamedata/units/views/' + card.type + '-icon-white.png)' }"></div>
+    <div class="w-full image-container bg-contain bg-no-repeat" :style="{ 'background-image': 'url(./gamedata/units/views/' + card.type + '-icon-white.png)' }"></div>
     <div>
       <template v-if="unit?.hunting"><Info :tooltip="`${unit?.title} has hunting ${unit?.hunting} (needed for deer, aurochs, mammoth)`"><Icon v-for="n in unit?.hunting" name="teenyicons:arrow-up-outline"/></Info></template>
       <template v-if="unit?.attack"><Info :tooltip="`${unit?.title} has attack ${unit?.attack} (needed in raids, increases raid attack dice throw by ${unit?.attack})`"><Icon v-for="n in unit?.attack" name="mdi:axe"/></Info></template>

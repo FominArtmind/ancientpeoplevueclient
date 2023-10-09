@@ -27,7 +27,7 @@
     "flowbite": "^1.8.1",
     "flowbite-vue": "^0.0.17-next.6",
     "luxon": "^3.4.3",
-    "nuxt-socket-io": "1.1.13",
+    "nuxt-socket-io": "3.0.13",
     "tw-elements": "^1.0.0"
   }
 }

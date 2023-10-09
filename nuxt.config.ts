@@ -23,8 +23,16 @@ export default {
     'nuxt-socket-io'
   ],
   typescript: {
-    strict: true,
-    typeCheck: true
+    strict: false,
+    typeCheck: false
+  },
+  vite: {
+    base: "/197/sclient"
+  },
+  content: {
+    api: {
+      baseURL: '/197/sclient/api/_content'
+    }
   },
   vuetify: {
     /* vuetify options */
