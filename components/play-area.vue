@@ -5,30 +5,30 @@
         <li v-if="action.type === 'hint'">
           <i>{{ action.hint }}</i>
         </li>
-        <li v-else-if="action.type === 'done'" class="menu-action">
+        <li v-else-if="action.type === 'done'" class="menu-action" @click="selectSocialityCardsToReturn">
           Done selection
         </li>
-        <li v-else-if="action.type === 'hunt'" class="menu-action">
+        <li v-else-if="action.type === 'hunt'" class="menu-action" @click="hunt">
           Hunt
         </li>
-        <li v-else-if="action.type === 'raid'" class="menu-action">
+        <li v-else-if="action.type === 'raid'" class="menu-action" @click="raid(action.aimPlayer as string)">
           Raid {{ action.aimPlayer }}
         </li>
-        <li v-else-if="action.type === 'buy'" class="menu-action">
+        <li v-else-if="action.type === 'buy'" class="menu-action" @click="buy">
           <ChatValue :value="'Buy'" />
           <ArtIcon :type="action.aim ? action.aim[0].type : ''" />
         </li>
-        <li v-else-if="action.type === 'upgrade'" class="menu-action">
+        <li v-else-if="action.type === 'upgrade'" class="menu-action" @click="upgrade">
           <ChatValue :value="'Upgrade'" />
           <ArtIcon :type="action.source ? action.source[0].type : ''" />
           <ChatValue :value="'to'" />
           <ArtIcon :type="action.aim ? action.aim[0].type : ''" />
         </li>
-        <li v-else-if="action.type === 'develop'" class="menu-action">
+        <li v-else-if="action.type === 'develop'" class="menu-action" @click="develop">
           <ChatValue :value="'Develop to'" />
           <ArtIcon :type="action.aim ? action.aim[0].type : ''" :kind="'development'" />
         </li>
-        <li v-else-if="action.type === 'pass'" class="menu-action">
+        <li v-else-if="action.type === 'pass'" class="menu-action" @click="pass">
           Pass
         </li>
         <li v-else>
@@ -98,9 +98,9 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { Card, VillageCard, Player } from "../types/game";
+import { Card, VillageCard, Player, Action } from "../types/game";
 import { MenuAction } from "../types/menu-action";
-import { nickname, game, selection } from "../composables/state";
+import { nickname, game, selection, actionPerformed, performAction } from "../composables/state";
 import { clone } from "../utils/clone";
 
 const menu = ref<HTMLUListElement>();
@@ -170,47 +170,49 @@ function closeMenu() {
 }
 
 function processHeroCardClicked(card: Card | VillageCard, location: "village" | "hand") {
-  if(heroTurn.value && !hero.value.state.pathfindingChoose) {
-    if(hero.value.state.sociality) {
-      if(location === "hand") {
-        const hcard = card as Card;
-        const index = selection.value.hand.findIndex(value => value.id === hcard.id);
-        if(index === -1) {
-          selection.value.hand.push(clone(hcard));
-        }
-        else {
-          selection.value.hand.splice(index, 1);
-        }
-      }
-    }
-    else {
-      if(location === "hand") {
-        const hcard = card as Card;
-        if(hero.value.state.playingCard) {
-          console.log("hero plays", hcard.type);
-        }
-        else {
-          // check for leadership, unity hero.value.state.leadership
-          console.log("hero plays leadership/unity or wrong card", hcard.type);
-        }
-      }
-      else if(location === "village") {
-        const vcard = card as VillageCard;
-        const index = selection.value.village.findIndex(value => value.card.id === vcard.card.id);
-        if(phase.value === "living") {
+  if(!actionPerformed.value) {
+    if(heroTurn.value && !hero.value.state.pathfindingChoose) {
+      if(hero.value.state.sociality) {
+        if(location === "hand") {
+          const hcard = card as Card;
+          const index = selection.value.hand.findIndex(value => value.id === hcard.id);
           if(index === -1) {
-            selection.value.village.push(clone(vcard));
+            selection.value.hand.push(clone(hcard));
           }
           else {
-            selection.value.village.splice(index, 1);
+            selection.value.hand.splice(index, 1);
           }
         }
-        else {
-          if(index === -1) {
-            selection.value.village = [clone(vcard)];
+      }
+      else {
+        if(location === "hand") {
+          const hcard = card as Card;
+          if(hero.value.state.playingCard) {
+            console.log("hero plays", hcard.type);
           }
           else {
-            selection.value.village = [];
+            // check for leadership, unity hero.value.state.leadership
+            console.log("hero plays leadership/unity or wrong card", hcard.type);
+          }
+        }
+        else if(location === "village") {
+          const vcard = card as VillageCard;
+          const index = selection.value.village.findIndex(value => value.card.id === vcard.card.id);
+          if(phase.value === "living") {
+            if(index === -1) {
+              selection.value.village.push(clone(vcard));
+            }
+            else {
+              selection.value.village.splice(index, 1);
+            }
+          }
+          else {
+            if(index === -1) {
+              selection.value.village = [clone(vcard)];
+            }
+            else {
+              selection.value.village = [];
+            }
           }
         }
       }
@@ -219,12 +221,14 @@ function processHeroCardClicked(card: Card | VillageCard, location: "village" | 
 }
 
 function processHeroCardRightClicked(card: Card | VillageCard, location: "village" | "hand") {
-  if(heroTurn.value && !hero.value.state.pathfindingChoose) {
-    if(!hero.value.state.sociality) {
-      if(location === "village") {
-        const vcard = card as VillageCard;
-        if(phase.value === "development") {
-          selection.value.village = [clone(vcard)];
+  if(!actionPerformed.value) {
+    if(heroTurn.value && !hero.value.state.pathfindingChoose) {
+      if(!hero.value.state.sociality) {
+        if(location === "village") {
+          const vcard = card as VillageCard;
+          if(phase.value === "development") {
+            selection.value.village = [clone(vcard)];
+          }
         }
       }
     }
@@ -232,18 +236,20 @@ function processHeroCardRightClicked(card: Card | VillageCard, location: "villag
 }
 
 function processResourceCardClicked(card: Card, player?: string) {
-  if(heroTurn.value) {
-    if(hero.value.state.pathfindingChoose) {
-      // TO DO perform action on the resource
-    }
-    else if(!hero.value.state.sociality) {
-      if(!player || player === nickname.value) {
-        const index = selection.value.resources.findIndex(value => value.id === card.id);
-        if(index === -1) {
-          selection.value.resources.push(clone(card));
-        }
-        else {
-          selection.value.resources.splice(index, 1);
+  if(!actionPerformed.value) {
+    if(heroTurn.value) {
+      if(hero.value.state.pathfindingChoose) {
+        // TO DO perform action on the resource
+      }
+      else if(!hero.value.state.sociality) {
+        if(!player || player === nickname.value) {
+          const index = selection.value.resources.findIndex(value => value.id === card.id);
+          if(index === -1) {
+            selection.value.resources.push(clone(card));
+          }
+          else {
+            selection.value.resources.splice(index, 1);
+          }
         }
       }
     }
@@ -251,37 +257,41 @@ function processResourceCardClicked(card: Card, player?: string) {
 }
 
 function processDraftCardClicked(card: Card, development: boolean) {
-  if(heroTurn.value) {
-    if(development) {
-      selection.value.draft = undefined;
-      if(selection.value.development?.type === card.type) {
-        selection.value.development = undefined;
-      }
-      else {
-        selection.value.development = clone(card);
-      }
-    }
-    else {
-      selection.value.development = undefined;
-      if(selection.value.draft?.type === card.type) {
+  if(!actionPerformed.value) {
+    if(heroTurn.value) {
+      if(development) {
         selection.value.draft = undefined;
+        if(selection.value.development?.type === card.type) {
+          selection.value.development = undefined;
+        }
+        else {
+          selection.value.development = clone(card);
+        }
       }
       else {
-        selection.value.draft = clone(card);
+        selection.value.development = undefined;
+        if(selection.value.draft?.type === card.type) {
+          selection.value.draft = undefined;
+        }
+        else {
+          selection.value.draft = clone(card);
+        }
       }
     }
   }
 }
 
 function processDraftCardRightClicked(card: Card, development: boolean) {
-  if(heroTurn.value) {
-    if(development) {
-      selection.value.draft = undefined;
-      selection.value.development = clone(card);
-    }
-    else {
-      selection.value.development = undefined;
-      selection.value.draft = clone(card);
+  if(!actionPerformed.value) {
+    if(heroTurn.value) {
+      if(development) {
+        selection.value.draft = undefined;
+        selection.value.development = clone(card);
+      }
+      else {
+        selection.value.development = undefined;
+        selection.value.draft = clone(card);
+      }
     }
   }
 }
@@ -293,6 +303,14 @@ const menuActions: ComputedRef<MenuAction[]> = computed(() => {
       hint: "Wait for other players"
     }];
   }
+
+  if(actionPerformed.value) {
+    return [{
+      type: "hint",
+      hint: "Wait for action in progress"
+    }];
+  }
+
   if(phase.value === "living") {
     if(hero.value.state.sociality) {
       if(selection.value.hand.length === hero.value.state.sociality) {
@@ -424,40 +442,94 @@ const menuActions: ComputedRef<MenuAction[]> = computed(() => {
   }
 });
 
-function play() {
+function performPlayerAction(action: Action) {
+  if(!actionPerformed.value) {
+    actionPerformed.value = true;
+    closeMenu();
 
+    performAction(action);
+  }
+}
+
+function play() {
+  performPlayerAction({
+    actor: nickname.value,
+    type: "card",
+    source: [],
+    aim: []
+  });
 }
 
 function selectSocialityCardsToReturn() {
-
+  performPlayerAction({
+    actor: nickname.value,
+    type: "returningSocialityCards",
+    source: [],
+    aim: [...selection.value.hand.map(value => value.id)]
+  });
 }
 
 function selectPathfindingCard() {
-
+  performPlayerAction({
+    actor: nickname.value,
+    type: "choosingPathfindingCard",
+    source: [],
+    aim: [...selection.value.resources.map(value => value.id)]
+  });
 }
 
 function hunt() {
-
+  performPlayerAction({
+    actor: nickname.value,
+    type: "hunt",
+    source: [...selection.value.village.map(value => value.card.id)],
+    aim: [...selection.value.resources.map(value => value.id)]
+  });
 }
 
 function raid(opponent: string) {
-
+  performPlayerAction({
+    actor: nickname.value,
+    type: "raid",
+    source: [...selection.value.village.map(value => value.card.id)],
+    aim: [game.value.players.indexOf(opponent)]
+  });
 }
 
 function pass() {
-
+  performPlayerAction({
+    actor: nickname.value,
+    type: "pass",
+    source: [],
+    aim: []
+  });
 }
 
 function buy() {
-
+  performPlayerAction({
+    actor: nickname.value,
+    type: "buy",
+    source: [],
+    aim: [selection.value.draft?.id as number]
+  });
 }
 
 function upgrade() {
-
+  performPlayerAction({
+    actor: nickname.value,
+    type: "upgrade",
+    source: [...selection.value.village.map(value => value.card.id)],
+    aim: [selection.value.draft?.id as number]
+  });
 }
 
 function develop() {
-
+  performPlayerAction({
+    actor: nickname.value,
+    type: "develop",
+    source: [],
+    aim: [selection.value.development?.id as number]
+  });
 }
 
 </script>

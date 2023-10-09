@@ -19,7 +19,8 @@ export default {
     '@nuxtjs/tailwindcss',
     'nuxt-icon',
     '@nuxt/content',
-    '@invictus.codes/nuxt-vuetify'
+    '@invictus.codes/nuxt-vuetify',
+    'nuxt-socket-io'
   ],
   typescript: {
     strict: true,
@@ -41,5 +42,12 @@ export default {
       autoImport: true,
       useVuetifyLabs: false 
     }
+  },
+  io: {
+    // module options
+    sockets: [{
+      name: 'main',
+      url: 'http://localhost:3000'
+    }]
   }
 }

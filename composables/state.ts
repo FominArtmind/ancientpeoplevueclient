@@ -1,7 +1,7 @@
 import { ref } from "vue";
 
 import { GeneralEvent } from "../types/events";
-import { Card, VillageCard, Game } from "../types/game";
+import { Card, VillageCard, Game, Action } from "../types/game";
 
 export interface GameState {
   game: Game
@@ -19,6 +19,8 @@ export interface SelectionState {
 
 export const gameId = ref<string>("id111");
 export const nickname = ref<string>("Arseniy");
+
+export const actionPerformed = ref(false);
 
 export const game = ref<Game>({
   id: "id",
@@ -433,6 +435,13 @@ export const selection = ref<SelectionState>({
   hand: [],
   village: []
 });
+
+export const performAction = (action: Action) => {
+  console.log(action);
+
+  // TO DO
+  actionPerformed.value = false;
+}
 
 // const opponent1 = ref<Player>({
 //   nick: "Kuzma",

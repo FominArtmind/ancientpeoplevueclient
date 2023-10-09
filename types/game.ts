@@ -30,7 +30,7 @@ export interface Option {
 
 export interface Action {
   actor: string
-  type: string
+  type: "card" | "hunt" | "raid" | "buy" | "upgrade" | "develop" | "pass" | "choosingPathfindingCard" | "returningSocialityCards"
   source: number[]
   aim: number[]
 }
